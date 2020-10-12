@@ -46,7 +46,7 @@ class TestController extends Controller
       return Specialization::get();
     }
     public function getCompanies(){
-      return Company::get();
+      return Company::with('user','specialization')->get();
     }
 
 }

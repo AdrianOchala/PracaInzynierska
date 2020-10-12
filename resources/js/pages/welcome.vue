@@ -10,8 +10,8 @@
                     <v-btn @click="showRegistration" width="300px">Rejestracja</v-btn>
                 </v-row>
             </v-container>
-            <login v-if="showLoginModel"></login>
-            <register v-if="showRegisterModel"></register>
+            <login v-if="getShowLoginComponent"></login>
+            <register v-if="getShowRegisterComponent"></register>
             <div class="container-fluid">
                 <about></about>
             </div>
@@ -22,7 +22,6 @@
                 <v-btn color="dark" @click="getLocation" class="mb-2">Moja lokalizacja</v-btn>
                 <v-text-field v-model="searchLocation" label="Miasto" ></v-text-field>
                 <v-btn color="dark" @click="searchForCity" class="mb-2">Szukaj miasta</v-btn>
-<!--                <v-btn @click="saveLocation">Zapisz lokalizację</v-btn>-->
                     <gmaps-map :options="mapOptions">
                         <gmaps-marker :visible="myLocation" :options="optionsA" :icon="'/images/userMarker.png'" />
 
@@ -46,9 +45,9 @@
     </v-app>
 </template>
 <script>
-    import about from '../components/AboutComponent'
-    import login from '../components/LoginComponent'
-    import register from '../components/RegisterComponent'
+    import about from '../components/WelcomePage/AboutComponent';
+    import login from '../components/Auth/LoginComponent';
+    import register from '../components/Auth/RegisterComponent';
     import {mapGetters} from 'vuex';
     import { gmapsMap, gmapsMarker,gmapsInfoWindow,gmapsPopup} from 'x5-gmaps';
     export default {
@@ -56,8 +55,6 @@
         components:{about,login, register,gmapsMap, gmapsMarker,gmapsInfoWindow,gmapsPopup  },
         data(){
             return{
-                showLoginModel:false,
-                showRegisterModel:false,
                 optionsA: {
                     position: { lat: 0, lng: 0 },
                     title: 'Twój znacznik',
@@ -78,13 +75,25 @@
                 popupsInfo:[],
             }},
         methods:{
-            showLogin(){
-                if(this.showRegisterModel===true){ this.showRegisterModel = !this.showRegisterModel;}
-                this.showLoginModel = !this.showLoginModel;
+           showLogin(){
+               this.$store.commit('setShowLoginComponent', true);
+               this.$store.commit('setShowRegisterComponent', false);
+                // if(this.getShowRegisterComponent===true){
+                //     this.setShowRegisterComponent(false)
+                //     this.showRegisterModel = false
+                // }
+                // this.setShowLoginComponent(true)
+                // this.showLoginModel = true
             },
             showRegistration(){
-                if(this.showLoginModel===true) {this.showLoginModel = !this.showLoginModel;}
-                this.showRegisterModel = !this.showRegisterModel;
+                this.$store.commit('setShowLoginComponent', false);
+               this.$store.commit('setShowRegisterComponent', true);
+                // if(this.getShowLoginComponent===true) {
+                //     this.setShowLoginComponent(false)
+                //     this.showLoginModel = false
+                // }
+                // this.showRegisterModel=true
+                // this.setShowRegisterComponent(true)
             },
             updatePosition(pos) {
                 this.positionA = pos
@@ -117,7 +126,8 @@
             },
         },
         computed:{
-            ...mapGetters(['getCompanyLocation']),
+            ...mapGetters(['getShowLoginComponent','getShowRegisterComponent']),
+
         },
         async created(){
             const res = await  this.callApi('get','/getCompanies')
@@ -129,8 +139,11 @@
                     this.popsups[i]= this.companies[i].location
                 }
             }else{
-                this.$toast.error('Nie udało się pobrać specjalizacji ! Odśwież stronę', { timeout: 0 })
+                this.$toast.error('Nie udało się pobrać warsztatów ! Odśwież stronę', { timeout: 6000 })
             }
+        },
+        watch:{
+
         },
     }
 </script>

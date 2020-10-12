@@ -15,7 +15,7 @@
 <div id="app">
 
     @auth
-        <hello :user="{{Auth::user()}}"></hello>
+        <index :user="{{Auth::user()}}" :permission="{{Auth::user()->role->permission}}"></index>
     @endauth
 
     @guest

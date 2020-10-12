@@ -183,7 +183,7 @@
 </template>
 <script>
     import {mapGetters} from 'vuex';
-    import searchOnTheMap from '../components/Modals/SearchMechanic'
+    import searchOnTheMap from '../User/SearchMechanic'
     export default {
         components:{searchOnTheMap},
         data(){
@@ -225,21 +225,21 @@
                 if(res.status === 201){
                     this.$toast.success('Pomyślnie zarejestowano, proszę się zalogować')
                     this.accountType =''
+                    this.$store.commit('setShowLoginComponent', true);
+                    this.$store.commit('setShowRegisterComponent', false);
                 }else{
                     this.$toast.warning('Coś poszło nie tak')
                 }
             },
             async registerOwner(){
                 this.owner.location = this.getCompanyLocation;
-                console.log(this.owner.selectedSpecs);
                 this.owner.companyConvertedPhones = JSON.stringify(this.owner.companyPhones)
                 this.owner.location = JSON.stringify(this.owner.location)
                 const res = await this.callApi('post','/registerOwner', this.owner );
                 if(res.status === 200){
                     this.$toast.success('Pomyślnie zarejestowano, proszę się zalogować')
-                    this.showRegisterModel = false;
-                    this.showLoginModel = true;
-
+                    this.$store.commit('setShowLoginComponent', true);
+                    this.$store.commit('setShowRegisterComponent', false);
                 }else{
                     this.$toast.warning('Coś poszło nie tak')
                 }
@@ -260,7 +260,7 @@
             if(res.status === 200){
                 this.specializations = res.data
             }else{
-                this.$toast.error('Nie udało się pobrać specjalizacji ! Odśwież stronę', { timeout: 0 })
+                this.$toast.error('Nie udało się pobrać specjalizacji ! Odśwież stronę', { timeout: 6000 })
             }
         },
         watch: {

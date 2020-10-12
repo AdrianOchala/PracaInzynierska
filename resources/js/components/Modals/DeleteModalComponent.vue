@@ -31,7 +31,7 @@
             async deleteRole(){
                 const res = await this.callApi('post', this.getDeleteModalData.deleteUrl, this.getDeleteModalData.data);
                 if(res.status ===200){
-                    this.$toast.success('Pomyślnie usunięto rolę z systemu :)');
+                    this.$toast.success('Pomyślnie usunięto z systemu :)');
                     this.$store.commit('setDeletingModalDataAfterDelete',{
                         index: this.getDeleteModalData.deletingIndex,
                         isDeleted: true,

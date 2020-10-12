@@ -46,16 +46,18 @@
         data(){
             return{
                 resources:[
-                    {resourceName: 'Użytkownicy',read: false, write: false, update:false, delete:true, name:'AdminRole'},
-                    {resourceName: 'Warsztaty',read: false, write: false, update:false, delete:true, name:'Warsztaty'},
-                    {resourceName: 'Pracownicy',read: false, write: false, update:false, delete:true, name:'Pracownicy'},
-                    {resourceName: 'Użytkownicy',read: false, write: false, update:false, delete:true, name:'Users'},
+                    {resourceName: 'Strona główna',read: false, write: false, update:false, delete:true, name:'/'},
+                    {resourceName: 'Role',read: false, write: false, update:false, delete:true, name:'AdminRole'},
+                    {resourceName: 'Zarządzanie rolami',read: false, write: false, update:false, delete:true, name:'AdminRoleManagement'},
+
+                    {resourceName: 'Szukaj mechanika',read: false, write: false, update:false, delete:true, name:'SearchMechanic'},
                 ],
                 defaultResources:[
-                    {resourceName: 'Użytkownicy',read: false, write: false, update:false, delete:false, name:'AdminRole'},
-                    {resourceName: 'Warsztaty',read: false, write: false, update:false, delete:false, name:'Warsztaty'},
-                    {resourceName: 'Pracownicy',read: false, write: false, update:false, delete:false, name:'Pracownicy'},
-                    {resourceName: 'Użytkownicy',read: false, write: false, update:false, delete:false, name:'Users'},
+                    {resourceName: 'Strona główna',read: false, write: false, update:false, delete:false, name:'/'},
+                    {resourceName: 'Role',read: false, write: false, update:false, delete:false, name:'AdminRole'},
+                    {resourceName: 'Zarządzanie rolami',read: false, write: false, update:false, delete:false, name:'AdminRoleManagement'},
+
+                    {resourceName: 'Szukaj mechanika',read: false, write: false, update:false, delete:false, name:'SearchMechanic'},
                 ],
                 roles:[],
                 selectedRole:null,

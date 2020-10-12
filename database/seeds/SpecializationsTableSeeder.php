@@ -12,12 +12,22 @@ class SpecializationsTableSeeder extends Seeder
      */
     public function run()
     {
-        Specialization::create(['name'=>'Auto Gaz']);
+        Specialization::create(['name'=>'Mechanika samochodowa']);
+        Specialization::create(['name'=>'Instalacje LPG']);
         Specialization::create(['name'=>'Rozruszniki']);
+        Specialization::create(['name'=>'Serwis klimatyzacji']);
         Specialization::create(['name'=>'Skrzynie biegów']);
         Specialization::create(['name'=>'Elektryka']);
-        Specialization::create(['name'=>'Blacharka']);
+        Specialization::create(['name'=>'Wulkanizacja']);
+        Specialization::create(['name'=>'Blacharz']);
+        Specialization::create(['name'=>'Szyby samochodowe']);
         Specialization::create(['name'=>'Nagłośnienie']);
+        Specialization::create(['name'=>'Diesel serwis']);
+        Specialization::create(['name'=>'Układ wydechowy']);
+        Specialization::create(['name'=>'Manualne skrzynie biegów']);
+        Specialization::create(['name'=>'Automatyczne skrzynie biegów']);
+        Specialization::create(['name'=>'Regeneracja filtrów DPF']);
+        Specialization::create(['name'=>'Chiptuning']);
 
     }
 }

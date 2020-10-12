@@ -12,20 +12,55 @@ export default new Vuex.Store({
             isDeleted:false,
         },
         user:false,
+        userPermission:null,
         companyLocation:null,
+        showLoginComponent:false,
+        showRegisterComponent:false,
+        userLocation:null,
+        showAskForRepair:null,
    },
     getters:{
-       getDeleteModalData(state){
+        getUserPermission(state){
+            return state.userPermission;
+        },
+        getDeleteModalData(state){
            return state.deleteModalData;
-       },
+        },
         getCompanyLocation(state){
            return state.companyLocation;
         },
+        getUserLocation(state){
+            return state.userLocation;
+        },
+        getUser(state){
+          return state.user;
+        },
+        getShowLoginComponent(state){
+           return state.showLoginComponent;
+        },
+        getShowRegisterComponent(state){
+           return state.showRegisterComponent;
+        },
+        getShowAskForRepair(state){
+            return state.showAskForRepair;
+        }
     },
     mutations:{
+       setShowAskForRepair(state,data){
+            state.showAskForRepair = data;
+       },
        updateUser(state, data){
            state.user = data;
        },
+        updateUserPermission(state, data){
+          state.userPermission = data;
+        },
+        setShowLoginComponent(state,data){
+          state.showLoginComponent = data;
+        },
+        setShowRegisterComponent(state,data){
+          state.showRegisterComponent = data;
+        },
        //Przekazuję który obiekt ma zostać usunięty wraz z parametrami
        setDeletingModalData(state, data){
            state.deleteModalData = data
@@ -42,12 +77,16 @@ export default new Vuex.Store({
                     data: null,
                     deletingIndex:data.index,
                     isDeleted:data.isDeleted,
-                }
+                };
            state.deleteModalData = deleteModal;
         },
         setCompanyLocation(state,data){
           state.companyLocation = data;
         },
+        setUserLocation(state,data){
+            state.userLocation = data;
+        },
+
     }
 });
 //Edycja stora poprzez mutacje !

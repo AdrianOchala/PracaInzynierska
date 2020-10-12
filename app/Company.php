@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Company extends Model
 {
     protected $fillable = [
-        'owner_id', 'name', 'NIP','location','city','street','zip-code','phones'
+        'user_id', 'name', 'NIP','location','city','street','zip-code','phones'
     ];
     public $timestamps = false;
+    public function user(){
+        return $this->belongsTo('App\User');
+    }
     public function specialization(){
-        return $this->belongsToMany('App\Specialization', 'company_specs');
+        return$this->belongsToMany('App\Specialization','company_specialization');
     }
 }

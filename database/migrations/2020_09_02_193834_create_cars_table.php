@@ -17,11 +17,17 @@ class CreateCarsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('brand');
-            $table->string('model');
-            $table->string('engine');
-            $table->integer('doors');
+            $table->unsignedBigInteger('carModel_id');
+            $table->foreign('carModel_id')->references('id')->on('car_models');
+            $table->string('type');
+            $table->year('production');
+            $table->string('plate');
             $table->string('fuel');
+            $table->string('engine');
+            $table->string('transmission');
+            $table->string('VIN')->unique();
+            $table->date('service')->nullable();
+            $table->string('mileage')->nullable();
         });
     }
 

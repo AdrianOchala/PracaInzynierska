@@ -1,9 +1,8 @@
 <template>
-    <div class="container-fluid">
         <div class="container-fluid">
             <v-row>
                 <v-col cols="12" md="6">
-                <h1>Roles in system</h1>
+                <h2>Role w systemie</h2>
                 <!-- Pop-out dla dodania roli -->
                 <v-dialog v-model="dialog" persistent max-width="600px">
                     <template v-slot:activator="{ on, attrs }">
@@ -41,6 +40,7 @@
                         <thead>
                         <tr>
                             <th class="text-left">Name</th>
+                            <th class="text-left">Opcje</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -58,11 +58,39 @@
                 </v-simple-table>
                 <!--/Tabela wyświetlająca role-->
                 </v-col>
-                    <v-col md="6">
-                        Ok
-                    </v-col>
+                <v-col md="6">
+                    <h2>Edycja uprawnień w systemie</h2><br>
+                    <v-select v-model="selectedRole"
+                              :items="roles"
+                              item-text="name"
+                              item-value="id"
+                              label="Wybierz rolę"
+                              @change="changeRole"
+                    ></v-select>
+                    <v-simple-table>
+                        <thead>
+                        <tr>
+                            <th class="text-left">Dostęp</th>
+                            <th class="text-left">Widok</th>
+                            <th class="text-left">Zapis</th>
+                            <th class="text-left">Edycja</th>
+                            <th class="text-left">Usuwanie</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(r,i) in resources" :key="i">
+                            <td>{{ r.resourceName }}</td>
+                            <td><v-checkbox v-model=r.read></v-checkbox></td>
+                            <td><v-checkbox v-model=r.write></v-checkbox></td>
+                            <td><v-checkbox v-model=r.update></v-checkbox></td>
+                            <td><v-checkbox v-model=r.delete></v-checkbox></td>
+                        </tr>
+                        </tbody>
+                        <v-btn @click="assignPermissions">Zapisz</v-btn>
+                    </v-simple-table>
+                </v-col>
             </v-row>
-        </div>
+
             <!-- Pop-out dla edycji roli -->
             <v-dialog v-model="editdialog" max-width="500px">
                 <v-card>
@@ -85,12 +113,11 @@
                 <h4 slot="header">Czy napewno chcesz usunąć rolę?</h4>
             </deleteModal>
             <!--/Pop-out potwierdzający usunięcie roli-->
-
-    </div>
+        </div>
 </template>
 
 <script>
-    import deleteModal from '../components/Modals/DeleteModalComponent';
+    import deleteModal from '../Modals/DeleteModalComponent';
     import {mapGetters} from 'vuex';
     export default {
         name: "AdminRoleComponent",
@@ -114,16 +141,36 @@
                 rules: [v => v.length <= 25 || 'Max 25 characters'],
                 errors:[],
                 index:0,
+                resources:[
+
+                    {resourceName: 'Szukaj mechanika',read: false, write: false, update:false, delete:false, name:'SearchMechanic'},
+                    {resourceName: 'Zarządzanie rolami',read: false, write: false, update:false, delete:false, name:'AdminRoleManagement'},
+                    {resourceName: 'Mój samochód',read: false, write: false, update:false, delete:false, name:'UserCar'},
+                    {resourceName: 'Moje naprawy',read: false, write: false, update:false, delete:false, name:'UserRepair'},
+                ],
+                defaultResources:[
+
+                    {resourceName: 'Szukaj mechanika',read: false, write: false, update:false, delete:false, name:'SearchMechanic'},
+                    {resourceName: 'Zarządzanie rolami',read: false, write: false, update:false, delete:false, name:'AdminRoleManagement'},
+                    {resourceName: 'Mój samochód',read: false, write: false, update:false, delete:false, name:'UserCar'},
+                    {resourceName: 'Moje naprawy',read: false, write: false, update:false, delete:false, name:'UserRepair'},
+                ],
+                selectedRole:null,
             }
         },
         async created(){
-            const res = await this.callApi('get', '/getRole');
-            if(res.status === 200){
-                this.roles = res.data
+            const res = await this.callApi('get','getRole');
+            if(res.status ===200){
+                this.roles = res.data;
+                if(res.data.length){
+                    this.selectedRole = res.data[0].id;
+                    if(res.data[0].permission){
+                        this.resources = JSON.parse(res.data[0].permission);
+                    }
+                }
             }else{
-                console.log('Nie można pobrać ról!')
+                this.$toast.warning('Coś poszło nie tak');
             }
-
         },
         methods:{
             async addRole(){
@@ -145,15 +192,13 @@
                     this.data.name='';
                 }else{
                     if(res.data.errors.name){
-                        this.errors = res.data.errors
+                        this.errors = res.data.errors;
                     }
                     this.alertDescription='Nie można dodać roli. Popraw błędy stosując się do podanych zasad :)';
                     return this.alert=true;
                 }
             },
             async editRole(){
-
-
                 const res = await this.callApi('post', '/editRole', this.editdata);
                 if(res.status === 200)
                 {
@@ -162,7 +207,7 @@
                     this.editdialog = false;
                 }else{
                     if(res.data.errors.name){
-                        this.errors = res.data.errors
+                        this.errors = res.data.errors;
                     }
                     this.alertDescription='Nie można dodać roli. Popraw błędy stosując się do podanych zasad :)';
                     return this.alert=true;
@@ -184,10 +229,27 @@
                         data: role,
                         deletingIndex: index,
                         isDeleted: false,
-                }
+                };
                 this.$store.commit('setDeletingModalData', deleteModalData);
             },
-
+            async assignPermissions(){
+                let data = JSON.stringify(this.resources);
+                const res = await this.callApi('post','assignPermissions',{'permission': data, id : this.selectedRole });
+                if(res.status ===200){
+                    this.$toast.success('Pomyślnie zaktualizowano uprawnienia');
+                }else{
+                    this.$toast.warning('Coś poszło nie tak');
+                }
+            },
+            changeRole(){
+                let index = this.roles.findIndex(role => role.id === this.selectedRole);
+                let permission = this.roles[index].permission;
+                if(!permission){
+                    this.resources = this.defaultResources;
+                }else{
+                    this.resources = JSON.parse(permission);
+                }
+            },
         },
         computed:{
             ...mapGetters(['getDeleteModalData'])
@@ -199,8 +261,5 @@
                 }
             }
         },
-
-
-
     }
 </script>

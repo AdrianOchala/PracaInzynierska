@@ -15,7 +15,7 @@ Vue.use(x5GMaps, 'AIzaSyDhVXa0nOz4UUTyrLBYp4sNjTMD6izwX6Y');
 Vue.mixin(common);
 Vue.use(Toast);
 
-Vue.component('hello', require('./pages/HomeComponent.vue').default);
+Vue.component('index', require('./pages/MainComponent.vue').default);
 Vue.component('welcome', require('./pages/welcome.vue').default);
 const app = new Vue({
 
