@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateNotesTable extends Migration
+class CreateRepairsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,20 @@ class CreateNotesTable extends Migration
      */
     public function up()
     {
-        Schema::create('notes', function (Blueprint $table) {
+        Schema::create('repairs', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id');
+            $table->foreign('company_id')->references('id')->on('companies');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('car_id');
             $table->foreign('car_id')->references('id')->on('cars');
-            $table->string('date')->nullable();
-            $table->text('description');
-            $table->string('title');
+            $table->string('status',30)->default('Oczekujące');
+            $table->bigInteger('price')->nullable();
+            $table->text('description')->nullable();
+            $table->string('contact',30);
+            $table->string('category',50);
+            $table->text('companyReply')->nullable();
             $table->timestamps();
         });
     }
@@ -33,6 +38,6 @@ class CreateNotesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notes');
+        Schema::dropIfExists('repairs');
     }
 }

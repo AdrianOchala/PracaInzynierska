@@ -97,7 +97,6 @@ class AuthController extends Controller
                 'role_id' => '3',
             ]);
             $user = User::where('email', $request->email)->first();
-            \Log::info($user);
             Company::create([
                 'user_id' => $user->id,
                 'name' => $request->companyName,
@@ -113,7 +112,6 @@ class AuthController extends Controller
             $companyspecs=[];
             foreach ($specs as $s) {
                 array_push($companyspecs,['company_id'=>$company->id,'specialization_id'=>$s]);
-                \Log::info($companyspecs);
             }
             CompanySpecialization::insert($companyspecs);
             DB::commit();

@@ -145,13 +145,16 @@
 
                     {resourceName: 'Szukaj mechanika',read: false, write: false, update:false, delete:false, name:'SearchMechanic'},
                     {resourceName: 'Zarządzanie rolami',read: false, write: false, update:false, delete:false, name:'AdminRoleManagement'},
+                    {resourceName: 'Mój warsztat',read: false, write: false, update:false, delete:false, name:'OwnerCompany'},
                     {resourceName: 'Mój samochód',read: false, write: false, update:false, delete:false, name:'UserCar'},
                     {resourceName: 'Moje naprawy',read: false, write: false, update:false, delete:false, name:'UserRepair'},
+
                 ],
                 defaultResources:[
 
                     {resourceName: 'Szukaj mechanika',read: false, write: false, update:false, delete:false, name:'SearchMechanic'},
                     {resourceName: 'Zarządzanie rolami',read: false, write: false, update:false, delete:false, name:'AdminRoleManagement'},
+                    {resourceName: 'Mój warsztat',read: false, write: false, update:false, delete:false, name:'OwnerCompany'},
                     {resourceName: 'Mój samochód',read: false, write: false, update:false, delete:false, name:'UserCar'},
                     {resourceName: 'Moje naprawy',read: false, write: false, update:false, delete:false, name:'UserRepair'},
                 ],

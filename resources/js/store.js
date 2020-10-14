@@ -18,6 +18,7 @@ export default new Vuex.Store({
         showRegisterComponent:false,
         userLocation:null,
         showAskForRepair:null,
+        showEditCompany:false,
    },
     getters:{
         getUserPermission(state){
@@ -43,9 +44,15 @@ export default new Vuex.Store({
         },
         getShowAskForRepair(state){
             return state.showAskForRepair;
+        },
+        getShowEditCompany(state){
+            return state.showEditCompany;
         }
     },
     mutations:{
+       setShowEditCompany(state,data){
+           state.showEditCompany = data;
+       },
        setShowAskForRepair(state,data){
             state.showAskForRepair = data;
        },

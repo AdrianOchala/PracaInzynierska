@@ -9,7 +9,10 @@ class RepairsController extends Controller
 {
     public function getUserRepairs(){
         $user = Auth::user()->id;
-        return Repair::with('car.model','car.model.brand','user','company')->where('user_id',$user)->get();
+        $waiting = Repair::with('car.model','car.model.brand','user','company')->where([['user_id',$user],['status','Oczekujące']])->get();
+        $inProgress = Repair::with('car.model','car.model.brand','user','company')->where([['user_id',$user],['status','W trakcie']])->get();
+        $finished = Repair::with('car.model','car.model.brand','user','company')->where([['user_id',$user],['status','Zakończone']])->get();
+        return [$waiting,$inProgress,$finished];
     }
     public function addRepair(Request $request){
         $user = Auth::user()->id;
@@ -24,5 +27,12 @@ class RepairsController extends Controller
     }
     public function getRepairDetails($id){
         return Repair::with(['user','car','car.model','car.model.brand','company'])->where('id',$id)->first();
+    }
+    public function acceptRepair(Request $request){
+        return Repair::where('id',$request->id)->update([
+            'companyReply'=>$request->companyReply,
+            'price'=>$request->price,
+            'status'=>'W trakcie',
+        ]);
     }
 }

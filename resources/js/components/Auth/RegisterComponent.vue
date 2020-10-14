@@ -256,7 +256,7 @@
             ...mapGetters(['getCompanyLocation']),
         },
         async created(){
-            const res = await this.callApi('get', '/getSpecializations')
+            const res = await this.callApi('get', '/getSpecializations');
             if(res.status === 200){
                 this.specializations = res.data
             }else{

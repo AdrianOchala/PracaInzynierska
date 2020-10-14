@@ -17,12 +17,12 @@ class CreateCompaniesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('name');
-            $table->bigInteger('NIP');
-            $table->string('location');
-            $table->string('city');
-            $table->string('street');
-            $table->string('zipCode');
+            $table->string('name',30);
+            $table->string('NIP',10);
+            $table->string('location',100);
+            $table->string('city',50);
+            $table->string('street',50);
+            $table->string('zipCode',6);
             $table->text('phones');
         });
     }

@@ -34,9 +34,11 @@ Route::get('/getSpecializations','TestController@getSpecializations');
 Route::get('/getCompanies','TestController@getCompanies');
 Route::get('/getNewMechanics','MechanicsController@getNewMechanics');
 Route::get('/getMechanicDetails/{id}','MechanicsController@getMechanicDetails');
+Route::get('/getOwnerCompany/{id}','MechanicsController@getOwnerCompany');
 Route::get('/getMechanicComments/{id}','CommentsController@getMechanicComments');
 Route::get('/getRepairDetails/{id}','RepairsController@getRepairDetails');
 Route::post('/addComment','CommentsController@addComment');
+Route::post('/updateCompany','MechanicsController@updateCompany');
 
 Route::get('/getCarsBrandAndModels','CarsController@getCarsBrandAndModels');
 Route::get('/getUserCars','CarsController@getUserCars');
@@ -47,6 +49,7 @@ Route::post('/addNote','CarsController@addNote');
 Route::get('/getUserNotes','CarsController@getUserNotes');
 Route::post('/reportComment','CommentsController@reportComment');
 Route::post('/addRepair','RepairsController@addRepair');
+Route::post('/acceptRepair','RepairsController@acceptRepair');
 
 Route::get('/getUserRepairs','RepairsController@getUserRepairs');
 Route::get('/','AuthController@index');

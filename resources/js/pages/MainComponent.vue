@@ -52,8 +52,7 @@
             <v-spacer></v-spacer>
             <h2>AutoService24</h2>
             <v-spacer></v-spacer>
-            Zalogowany jako:{{this.user.name}} {{this.user.surname}}
-            <a href="/logout" class="text-decoration-none">Wyloguj </a>
+            {{this.user.role.name}}
         </v-app-bar>
         <v-main>
             <v-content style="padding: 20px 20px 10px 20px;">
