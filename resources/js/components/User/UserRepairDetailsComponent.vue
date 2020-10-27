@@ -82,6 +82,9 @@
             <v-col cols="12" lg="5">
                 <v-card>
                     <v-card-title style="background: rgba(0, 0, 0, 0.7); color: white; ">Czat</v-card-title>
+                    <v-card-text v-if="userRepair">
+                        <chat :me="userRepair.user" :otherPerson="userRepair.company.user" ></chat>
+                    </v-card-text>
                 </v-card>
             </v-col>
         </v-row>
@@ -89,10 +92,11 @@
 </template>
 <script>
     import {mapGetters} from 'vuex';
+    import chat from '../Modals/ChatComponent';
     export default {
         name:'UserRepairDetails',
         components:{
-
+            chat
         },
         data(){
             return{

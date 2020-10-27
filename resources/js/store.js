@@ -19,8 +19,17 @@ export default new Vuex.Store({
         userLocation:null,
         showAskForRepair:null,
         showEditCompany:false,
+        reportComponent:{
+            showReportComponent:false,
+            reportUrl:'',
+            targetIndex:0,
+            reportObject:'',
+        }
    },
     getters:{
+       getReportComponent(state){
+            return state.reportComponent;
+       },
         getUserPermission(state){
             return state.userPermission;
         },
@@ -50,6 +59,9 @@ export default new Vuex.Store({
         }
     },
     mutations:{
+       setReportComponent(state,data){
+            state.reportComponent = data;
+       },
        setShowEditCompany(state,data){
            state.showEditCompany = data;
        },

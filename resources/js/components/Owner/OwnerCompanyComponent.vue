@@ -110,15 +110,15 @@
                         </tr>
                         </thead>
                         <tbody>
-<!--                        <tr v-for="(repair,i) in userRepairs" :key="i">-->
-<!--                            <td>{{ repair.created_at }}</td>-->
-<!--                            <td>{{ repair.status }}</td>-->
-<!--                            <td>{{repair.car.model.brand.name}} {{ repair.car.model.name }}</td>-->
-<!--                            &lt;!&ndash;                        Edycja i usuwanie roli&ndash;&gt;-->
-<!--                            <td>-->
-<!--                                <v-btn color="green" @click="$router.push(`/UserRepairDetails/${repair.id}`)">Otwórz</v-btn>-->
-<!--                            </td>-->
-<!--                        </tr>-->
+                        <tr v-for="(repair,i) in inProgressRepairs" :key="i">
+                            <td>{{ repair.created_at }}</td>
+                            <td>{{ repair.status }}</td>
+                            <td>{{repair.car.model.brand.name}} {{ repair.car.model.name }}</td>
+                            <!--                        Edycja i usuwanie roli-->
+                            <td>
+                                <v-btn color="green" @click="$router.push(`/OwnerRepairDetails/${repair.id}`)">Otwórz</v-btn>
+                            </td>
+                        </tr>
                         </tbody>
                     </v-simple-table>
                 </v-card-text>
@@ -177,6 +177,7 @@
                 fullname:'',
                 fullAddress:'',
                 newRepairs:'',
+                inProgressRepairs:'',
                 // userRepairs:'',
             }
         },
@@ -193,6 +194,7 @@
             if(userCompany.status === 200){
                 this.userCompany = userCompany.data[0];
                 this.newRepairs = userCompany.data[1];
+                this.inProgressRepairs = userCompany.data[2];
                 console.log(this.newRepairs)
                 this.fullname = this.userCompany.user.name +" "+ this.userCompany.user.surname;
                 this.fullAddress = this.userCompany.city + " ul." + this.userCompany.street + " "+this.userCompany.zipCode;

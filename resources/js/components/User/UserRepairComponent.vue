@@ -16,7 +16,7 @@
                         </thead>
                         <tbody>
                         <tr v-for="(repair,i) in userWaitingRepairs" :key="i">
-                            <td>{{ repair.created_at }}</td>
+                            <td>{{ userWaitingRepairsDates[i] }}</td>
                             <td>{{ repair.status }}</td>
                             <td>{{repair.car.model.brand.name}} {{ repair.car.model.name }}</td>
                             <!--                        Edycja i usuwanie roli-->
@@ -44,7 +44,7 @@
                             </thead>
                             <tbody>
                             <tr v-for="(repair,i) in userInProgressRepairs" :key="i">
-                                <td>{{ repair.created_at }}</td>
+                                <td>{{ userInProgressRepairsDates[i] }}</td>
                                 <td>{{ repair.status }}</td>
                                 <td>{{repair.car.model.brand.name}} {{ repair.car.model.name }}</td>
                                 <!--                        Edycja i usuwanie roli-->
@@ -74,7 +74,7 @@
                             </thead>
                             <tbody>
                             <tr v-for="(repair,i) in userFinishedRepairs" :key="i">
-                                <td>{{ repair.updated_at }}</td>
+                                <td>{{ userFinishedRepairsDates[i] }}</td>
                                 <td>{{ repair.price }}</td>
                                 <td>{{ repair.company.name }}</td>
                                 <td>{{ repair.status }}</td>
@@ -86,6 +86,7 @@
                             </tr>
                             </tbody>
                         </v-simple-table>
+                        <h5 style="text-align:center">Brak zakończonych napraw</h5>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -106,8 +107,11 @@
         data(){
             return{
                 userWaitingRepairs:'',
+                userWaitingRepairsDates:'',
                 userInProgressRepairs:'',
+                userInProgressRepairsDates:'',
                 userFinishedRepairs:'',
+                userFinishedRepairsDates:'',
             }
         },
         methods:{
@@ -119,8 +123,11 @@
             ]);
             if(userRepairs.status === 200){
                 this.userWaitingRepairs = userRepairs.data[0];
-                this.userInProgressRepairs = userRepairs.data[1];
-                this.userFinishedRepairs = userRepairs.data[2];
+                this.userWaitingRepairsDates = userRepairs.data[1];
+                this.userInProgressRepairs = userRepairs.data[2];
+                this.userInProgressRepairsDates = userRepairs.data[3];
+                this.userFinishedRepairs = userRepairs.data[4];
+                this.userFinishedRepairsDates = userRepairs.data[5];
             }else{
                 this.$toast.error('Nie udało się pobrać napraw z bazy danych. Proszę odświeżyć stronę');
             }

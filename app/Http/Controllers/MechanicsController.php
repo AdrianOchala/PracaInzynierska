@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Auth;
 
 class MechanicsController extends Controller
 {
+    public function getCompanies(){
+        return Company::with('user','specialization')->get();
+    }
+    public function getSpecializations(){
+        return Specialization::get();
+    }
     public function getNewMechanics(){
         $company = Company::with(['user','specialization'])->orderBy('id','desc')->take(5)->get();
         return $company;
@@ -22,7 +28,8 @@ class MechanicsController extends Controller
     public function getOwnerCompany($id){
         $company = Company::with(['user', 'specialization'])->where('user_id', $id)->first();
         $newRepairs = Repair::with(['user','company','car.model','car.model.brand'])->where([['company_id',$company->id],['status','Oczekujące']])->get();
-        return [$company,$newRepairs];
+        $inProgressRepairs = Repair::with(['user','company','car.model','car.model.brand'])->where([['company_id',$company->id],['status','W trakcie']])->get();
+        return [$company,$newRepairs,$inProgressRepairs];
     }
     public function updateCompany(Request $request){
         $user_id = Auth::user()->id;

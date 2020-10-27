@@ -6,12 +6,17 @@
                 <v-list-item>
                 <v-list-item-avatar color="grey">{{avatarTag}}</v-list-item-avatar>
                 <v-list-item-content>
-                    <v-list-item-title class="headline">{{company.user.name}} {{company.user.surname}}</v-list-item-title>
+                    <v-list-item-title class="headline">{{company.user.name}} {{company.user.surname}} "{{company.name}}"</v-list-item-title>
                     <v-list-item-subtitle>{{company.city}} {{company.zipCode}} {{company.street}}</v-list-item-subtitle>
                 </v-list-item-content>
-                    <v-list-item-action><v-btn color="green" @click="showAskForRepair">
+                    <v-list-item-action><v-btn color="green" outlined @click="showAskForRepair">
                         Złóż zapytanie
-                    </v-btn></v-list-item-action>
+                    </v-btn>
+                        <v-btn color="rgba(0, 0, 0, 0.6)" outlined class="mt-1">
+                            Wyślij wiadomość
+                        </v-btn>
+                        <v-btn outlined color="red" @click="reportCompany(company.id)" class="mt-1">Zgłoś warsztat</v-btn>
+                    </v-list-item-action>
                 </v-list-item>
                 <v-divider></v-divider>
                 <companyLocation :center="location" :name="company.name"></companyLocation>
@@ -81,6 +86,11 @@
                                 <v-divider v-if="index < comments.length - 1">
                                 </v-divider>
                             </template>
+                            <v-divider></v-divider>
+                            <v-pagination
+                                v-model="page"
+                                :length="3"
+                            ></v-pagination>
                         </v-list-item-group>
                     </v-list>
                 </v-card>
@@ -126,6 +136,11 @@
             <v-dialog v-model="getShowAskForRepair" persistent width="700px">
                 <ask-for-repair :company="company.id"></ask-for-repair>
             </v-dialog>
+            <v-dialog v-model="getReportComponent.showReportComponent" persistent width="700px">
+                <report-component>
+                    <h4 slot="header">Czy napewno chcesz zgłosić ten komentarz?</h4>
+                </report-component>
+            </v-dialog>
         </v-row>
     </div>
 </template>
@@ -137,9 +152,10 @@
 <script>
     import companyLocation from '../Modals/SingleCompanyLocationComponent';
     import askForRepair from '../Modals/AskForRepairComponent';
+    import reportComponent from '../Modals/ReportComponent';
     import {mapGetters} from 'vuex';
     export default{
-        components:{ companyLocation,askForRepair },
+        components:{ companyLocation,askForRepair,reportComponent },
         data(){
             return{
                 company:'', //Dany warsztat
@@ -155,25 +171,31 @@
                     rating:0,
                 },
                 rules: [v => v.length <= 250 || 'Max 250 characters'],
+                page:2,
             }
         },
         methods:{
             showAskForRepair(){
                 this.$store.commit('setShowAskForRepair', true);
             },
-            async reportComment(index){
+            reportComment(index){
                 console.log(index)
-                const comment_id = index;
-                const res = await this.callApi('post','/reportComment',{comment_id:index});
-                if(res.status === 201){
-                    this.$toast.success('Dziękujemy za zgłoszenie. Przyjrzymy się sprawie :)')
-                }else if(res.status === 401)
-                {
-                    console.log(res)
-                    this.$toast.error(res.data.msg)
-                }else{
-                    this.$toast.error('Nie udało się zgłosić komentarza, proszę spróbować później.')
-                }
+                const reportInfo = {
+                    showReportComponent:true,
+                    reportUrl:'/reportComment',
+                    targetIndex:index,
+                    reportObject: 'komentarz',
+                };
+                this.$store.commit('setReportComponent',reportInfo);
+            },
+            reportCompany(index){
+                const reportInfo = {
+                    showReportComponent:true,
+                    reportUrl:'/reportCompany',
+                    targetIndex:index,
+                    reportObject: 'warsztat',
+                };
+                this.$store.commit('setReportComponent',reportInfo);
             },
             async addComment(){
                 this.comment.companyId = this.company.id;
@@ -207,7 +229,7 @@
             this.avatarTag = this.company.user.name.charAt(0) + this.company.user.surname.charAt(0);
         },
         computed:{
-            ...mapGetters(['getShowAskForRepair']),
+            ...mapGetters(['getShowAskForRepair','getReportComponent']),
 
         },
 

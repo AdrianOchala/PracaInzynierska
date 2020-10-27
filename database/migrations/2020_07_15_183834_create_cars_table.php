@@ -27,7 +27,7 @@ class CreateCarsTable extends Migration
             $table->string('transmission',15);
             $table->string('VIN',17)->unique();
             $table->date('service')->nullable();
-            $table->string('mileage',7)->nullable();
+            $table->string('mileage',8)->nullable();
         });
     }
 

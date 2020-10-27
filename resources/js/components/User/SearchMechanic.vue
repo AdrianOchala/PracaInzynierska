@@ -1,7 +1,8 @@
 <template>
     <v-app>
         <div class="container">
-        <h1>Wyszukaj warsztat</h1>
+        <h1 v-if="getUser">Wyszukaj warsztat</h1>
+        <h1 v-else >Wskaż lokalizację swojego warsztatu</h1>
 
         <v-btn color="dark" @click="getLocation" class="mb-2">Moja lokalizacja</v-btn>
         <v-text-field v-model="searchLocation" label="Miasto" ></v-text-field>
@@ -21,7 +22,6 @@
                         </span>
             </gmaps-map>
         </template>
-            <v-btn @click="showcenter">Pokaz center</v-btn>
         </div>
         <div v-if="getUser" class="container-fluid">
             <v-row>
@@ -76,7 +76,7 @@
                         <v-slider
                             v-model="editingdistance"
                             :max="50"
-                            label="Promień"
+                            label="Zasięg"
                             class="align-center"
                         >
                             <template v-slot:append>
@@ -159,7 +159,7 @@
         methods:{
             centerChanged(){
                 console.log("zmieniłem center")
-
+                console.log(this.mapOptions.center)
             },
             showcenter(){
                 console.log("Computed property:")
@@ -173,6 +173,7 @@
             updatePosition(pos) {
                 this.positionA = pos
                 this.optionsA.position = this.positionA
+                console.log(this.optionsA.position)
             },
             async searchForCity(){
                 const url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+this.searchLocation+'&key=AIzaSyDhVXa0nOz4UUTyrLBYp4sNjTMD6izwX6Y'

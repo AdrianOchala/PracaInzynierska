@@ -37,7 +37,7 @@ class CommentsController extends Controller
         $isReported = Report::where([
             ['user_id',$user_id],
             ['type','comment'],
-            ['target_id',$request->comment_id],
+            ['target_id',$request->index],
         ])->get();
         \Log::info($isReported);
         $howMany = count($isReported);
@@ -49,7 +49,30 @@ class CommentsController extends Controller
             return Report::create([
                 'user_id' =>$user_id,
                 'type'=>'comment',
-                'target_id'=>$request->comment_id,
+                'target_id'=>$request->index,
+                'reason'=>$request->reason,
+            ]);
+        }
+    }
+    public function reportCompany(Request $request){
+        $user_id = Auth::user()->id;
+        $isReported = Report::where([
+            ['user_id',$user_id],
+            ['type','company'],
+            ['target_id',$request->index],
+        ])->get();
+        \Log::info($isReported);
+        $howMany = count($isReported);
+        if($howMany > 0){
+            return response()->json([
+                'msg' => 'Już zgłosiłeś ten warsztat!',
+            ], 401);
+        }else{
+            return Report::create([
+                'user_id' =>$user_id,
+                'type'=>'company',
+                'target_id'=>$request->index,
+                'reason'=>$request->reason,
             ]);
         }
     }

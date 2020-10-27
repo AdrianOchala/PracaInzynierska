@@ -8,7 +8,6 @@
                   </slot>
               </v-card-title>
                 <v-card-actions class="justify-center">
-
                     <v-btn text color="primary" @click="closeModal">Anuluj</v-btn>
                     <v-btn text color="primary" @click="deleteRole">Usuń</v-btn>
                 </v-card-actions>

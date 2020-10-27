@@ -13,6 +13,7 @@ import SearchMechanic from "./components/User/SearchMechanic";
 import MechanicDetails from "./components/User/MechanicDetails";
 import OwnerCompany from "./components/Owner/OwnerCompanyComponent";
 import PageNotFound from "./pages/PageNotFound";
+import UserMessages from "./components/User/UserMessagesComponent";
 
 export default new VueRouter({
     routes:[
@@ -24,8 +25,9 @@ export default new VueRouter({
         // {path:'/RepairDetails/:id',component:RepairDetails,name:RepairDetails},//Wyszukiwanie warsztatów ( User , Owner)
 
         {path:'/UserCar',component:UserCar,name:UserCar},//Wgląd w swoje samochody, dodawanie, edytowanie( User , Owner)
-        {path:'/UserRepair',component:UserRepair,name:UserRepair},//Wgląd w swoje samochody, dodawanie, edytowanie( User , Owner)
-        {path:'/UserRepairDetails/:id',component:UserRepairDetails,name:UserRepairDetails},//Wgląd w swoje samochody, dodawanie, edytowanie
+        {path:'/UserRepair',component:UserRepair,name:UserRepair},
+        {path:'/UserRepairDetails/:id',component:UserRepairDetails,name:UserRepairDetails},
+        {path:'/UserMessages',component:UserMessages,name:UserMessages},
         //Owner Path's
         {path:'/OwnerCompany',component:OwnerCompany,name:OwnerCompany},//Wgląd w swój warsztat
         {path:'/OwnerRepairDetails/:id',component:OwnerRepairDetails,name:OwnerRepairDetails},//Wgląd w swoje samochody, dodawanie, edytowanie

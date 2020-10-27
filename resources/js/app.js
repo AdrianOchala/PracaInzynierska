@@ -8,6 +8,8 @@ import common from "./common";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import store from "./store";
+import Vuelidate from 'vuelidate'
+Vue.use(Vuelidate)
 import x5GMaps from 'x5-gmaps';
 Vue.use(x5GMaps, 'AIzaSyDhVXa0nOz4UUTyrLBYp4sNjTMD6izwX6Y');
 

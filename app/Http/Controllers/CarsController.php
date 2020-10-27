@@ -12,8 +12,8 @@ use Illuminate\Support\Facades\Auth;
 class CarsController extends Controller
 {
     public function getCarsBrandAndModels(){
-        $brands = CarBrand::all();
-        $models = CarModel::all();
+        $brands = CarBrand::orderBy('name')->get();
+        $models = CarModel::orderBy('name')->get();
         return [$brands,$models];
     }
     public function saveCar(Request $request){
@@ -64,7 +64,6 @@ class CarsController extends Controller
         return Note::create([
             'user_id'=>$user_id,
             'car_id'=>$request->car,
-            'title'=>$request->title,
             'description'=>$request->description,
             'date'=>$request->date,
         ]);
@@ -72,5 +71,15 @@ class CarsController extends Controller
     public function getUserNotes(){
         $user_id = Auth::user()->id;
         return Note::with('user','car.model','car.model.brand')->where('user_id',$user_id)->get();
+    }
+    public function editUserNote(Request $request){
+        return Note::where('id',$request->id)->update([
+            'car_id'=>$request->car,
+            'date'=>$request->date,
+            'description'=>$request->description
+        ]);
+    }
+    public function deleteUserNote(Request $request){
+        return Note::where('id',$request->id)->delete();
     }
 }

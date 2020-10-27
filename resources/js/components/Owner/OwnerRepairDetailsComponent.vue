@@ -94,6 +94,9 @@
             <v-col cols="12" lg="5">
                 <v-card>
                     <v-card-title style="background: rgba(0, 0, 0, 0.7); color: white; ">Czat</v-card-title>
+                    <v-card-text v-if="userRepair">
+                        <chat :me="userRepair.company.user" :otherPerson="userRepair.user" ></chat>
+                    </v-card-text>
                 </v-card>
             </v-col>
         </v-row>
@@ -101,10 +104,11 @@
 </template>
 <script>
     import {mapGetters} from 'vuex';
+    import chat from '../Modals/ChatComponent';
     export default {
         name:'OwnerRepairDetails',
         components:{
-
+            chat
         },
         data(){
             return{
@@ -119,6 +123,9 @@
                 const res = await this.callApi('post','/acceptRepair',this.userRepair);
                 if(res.status === 200){
                     this.$toast.success('Pomyślnie zatwierdzono naprawę');
+                    setTimeout(() => {
+                        this.$router.go();
+                        }, 2000)
                 }else{
                     this.$toast.error('Nie udało się zatwierdzić naprawy, prosze spróbowac później')
                 }
@@ -147,6 +154,7 @@
                 if(this.userRepair.price > 0){
                     this.priceAdded = true;
                 }
+                console.log(this.userRepair)
             }else{
                 this.$toast.error('Błąd');
             }

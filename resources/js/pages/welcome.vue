@@ -18,7 +18,7 @@
 <!--            Pokazowa mapa z warsztatami i pobieraniem lokalizacji/ wyszukiwaniem miasta-->
             <v-container>
                 <v-app>
-                <h1>Sprawdź działanie</h1>
+                <h1>Sprawdź wyszukiwanie</h1>
                 <v-btn color="dark" @click="getLocation" class="mb-2">Moja lokalizacja</v-btn>
                 <v-text-field v-model="searchLocation" label="Miasto" ></v-text-field>
                 <v-btn color="dark" @click="searchForCity" class="mb-2">Szukaj miasta</v-btn>
