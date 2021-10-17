@@ -39,6 +39,143 @@
                             <v-icon left>mdi-minus</v-icon> Usuń
                         </v-btn>
                     </v-col>
+                    <v-col cols="12" sm="12" md="12">
+                        <v-textarea
+                            clearable
+                            counter
+                            clear-icon="mdi-close-circle"
+                            label="Opis firmy..."
+                            v-model="owner.description"
+                            hint="Max 500 znaków"
+                            filled
+                            auto-grow
+                            background-color="#CFD8DC"
+                            rows="1"
+                        ></v-textarea>
+                    </v-col>
+                    <v-col cols="12" sm="12" md="12" v-if="owner.hours">
+                        <v-card>
+                            <v-card-title>Godziny otwarcia</v-card-title>
+                            <v-card-text>
+                                <v-simple-table dark>
+                                    <thead>
+                                    <tr>
+                                        <th>Dzień</th>
+                                        <th>Od</th>
+                                        <th>Do</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>{{owner.hours[0].day}}</td>
+                                        <td>
+                                            <v-select
+                                                v-model="owner.hours[0].from"
+                                                :items="hours"
+                                            ></v-select>
+                                        </td>
+                                        <td>
+                                            <v-select
+                                                v-model="owner.hours[0].to"
+                                                :items="hours"
+                                            ></v-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{owner.hours[1].day}}</td>
+                                        <td>
+                                            <v-select
+                                                v-model="owner.hours[1].from"
+                                                :items="hours"
+                                            ></v-select>
+                                        </td>
+                                        <td>
+                                            <v-select
+                                                v-model="owner.hours[1].to"
+                                                :items="hours"
+                                            ></v-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{owner.hours[2].day}}</td>
+                                        <td>
+                                            <v-select
+                                                v-model="owner.hours[2].from"
+                                                :items="hours"
+                                            ></v-select>
+                                        </td>
+                                        <td>
+                                            <v-select
+                                                v-model="owner.hours[2].to"
+                                                :items="hours"
+                                            ></v-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{owner.hours[3].day}}</td>
+                                        <td>
+                                            <v-select
+                                                v-model="owner.hours[3].from"
+                                                :items="hours"
+                                            ></v-select>
+                                        </td>
+                                        <td>
+                                            <v-select
+                                                v-model="owner.hours[3].to"
+                                                :items="hours"
+                                            ></v-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{owner.hours[4].day}}</td>
+                                        <td>
+                                            <v-select
+                                                v-model="owner.hours[4].from"
+                                                :items="hours"
+                                            ></v-select>
+                                        </td>
+                                        <td>
+                                            <v-select
+                                                v-model="owner.hours[4].to"
+                                                :items="hours"
+                                            ></v-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{owner.hours[5].day}}</td>
+                                        <td>
+                                            <v-select
+                                                v-model="owner.hours[5].from"
+                                                :items="hours"
+                                            ></v-select>
+                                        </td>
+                                        <td>
+                                            <v-select
+                                                v-model="owner.hours[5].to"
+                                                :items="hours"
+                                            ></v-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{owner.hours[6].day}}</td>
+                                        <td>
+                                            <v-select
+                                                v-model="owner.hours[6].from"
+                                                :items="hours"
+                                            ></v-select>
+                                        </td>
+                                        <td>
+                                            <v-select
+                                                v-model="owner.hours[6].to"
+                                                :items="hours"
+                                            ></v-select>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </v-simple-table>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
                 </v-row>
                 <v-row>
                     <v-col cols="12" sm="12" md="12">
@@ -85,7 +222,19 @@ export default {
                 companyConvertedPhones:null,
                 location:'',
                 selectedSpecs:[],
+                description:'',
+                hours:[
+                    {'day':'Poniedziałek','from':null,'to':null},
+                    {'day':'Wtorek','from':null,'to':null},
+                    {'day':'Środa','from':null,'to':null},
+                    {'day':'Czwartek','from':null,'to':null},
+                    {'day':'Piątek','from':null,'to':null},
+                    {'day':'Sobota','from':null,'to':null},
+                    {'day':'Niedziela','from':null,'to':null},
+                ],
             },
+            hours:['00:00','01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00',
+                '11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00'],
         }
     },
     methods:{
@@ -93,7 +242,6 @@ export default {
             this.$store.commit('setShowEditCompany', false);
         },
         async editCompany(){
-            console.log(this.owner)
             this.owner.companyConvertedPhones = JSON.stringify(this.owner.companyPhones)
             const res = await this.callApi('post','/updateCompany', this.owner );
             if(res.status === 200){
@@ -105,7 +253,6 @@ export default {
         },
     },
     async created() {
-        console.log(this.company);
         const res = await this.callApi('get', '/getSpecializations');
         if(res.status === 200){
             this.specializations = res.data
@@ -123,7 +270,11 @@ export default {
             companyConvertedPhones:null,
             location:this.company.location,
             selectedSpecs:this.company.specialization,
+            description:this.company.description,
+            hours: this.company.hours,
         }
+        console.log("OOOOOO TUTAJ")
+        console.log(this.owner.hours[0].from)
     }
 }
 </script>

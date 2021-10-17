@@ -1,67 +1,107 @@
 <template>
     <div class="container-fluid">
-        <v-row >
-            <v-col>
-            <v-row class="justify-content-center">
-             <h2>Ostatnio dodane warsztaty</h2>
+        <v-row class="justify-content-center">
+            <v-card>
+                <v-card-title style="background: rgba(0, 0, 0, 0.7); color: white; "
+                              class="justify-content-center">Ostatnio dodane warsztaty</v-card-title>
+
+            <v-row class="justify-content-center my-2" no-gutters>
+                <v-col lg="3" md="6" sm="12" xs="12"  v-for="(company,index) in newCompanies" :key="company.id">
+                    <v-card class="mx-2">
+                        <v-card-title style="background: rgba(0, 0, 0, 0.7); color: white; ">
+                            {{company.user.name}} {{company.user.surname}} "{{company.name}}"
+                            <v-spacer></v-spacer>
+                            <v-btn text color="white" small class="px-0" @click="$router.push(`/MechanicDetails/${company.id}`)">
+                                <v-icon >mdi-open-in-new</v-icon>
+                            </v-btn>
+                        </v-card-title>
+                        <v-card-text>
+                            <h4 v-if="company.description">Opis właściciela</h4>
+                            <p>{{company.description}}</p>
+                            <v-divider></v-divider>
+                            <v-chip v-for="(spec,index) in company.specialization" :key="index"
+                                    class="ma-2"
+                                    color="green"
+                                    text-color="white"
+                            >
+                                {{spec.name}}
+                            </v-chip>
+                        </v-card-text>
+                    </v-card>
+                </v-col>
             </v-row>
-            <v-row class="justify-content-center">
-                <v-card v-for="(company,index) in newCompanies" :key="company.id" max-width="250px" class="m-2 card-outter">
-                    <v-list-item>
-                        <v-list-item-avatar color="grey"></v-list-item-avatar>
-                        <v-list-item-content>
-                            <v-list-item-title class="headline">{{company.name}}</v-list-item-title>
-                            <v-list-item-subtitle>{{company.user.name}}</v-list-item-subtitle>
-                        </v-list-item-content>
-                    </v-list-item>
-                    <v-img
-                        src=""
-                        height="150px"
-                    ></v-img>
-
-                    <v-card-text>
-                        <span v-for="spec in company.specialization">{{ spec.name }}</span>
-                    </v-card-text>
-
-                    <v-card-actions class="card-actions">
-                        <v-btn
-                            text
-                            color="deep-purple accent-4"
-                            @click="$router.push(`/MechanicDetails/${company.id}`)"
-                        >
-                            Szczegóły
-                        </v-btn>
-
-
-                    </v-card-actions>
-                </v-card>
-<!--                <v-card v-if="newCompanies" v-for="(company, index) in newCompanies" :key="index"-->
-<!--                    dark elevation="10" hover min-width="250px" min-height="250px" max-width="250px" max-height="250px"-->
-<!--                    class="m-3">-->
-<!--                <v-card-title>-->
-<!--                    {{company.name}}-->
-<!--                </v-card-title>-->
-<!--                <v-card-subtitle>-->
-<!--                    Właściciel: {{company.user.name}} {{company.user.surname}}-->
-<!--                </v-card-subtitle>-->
-<!--                <v-divider class="mt-1 mb-1"></v-divider>-->
-<!--                <v-card-text>-->
-<!--                    <ul>Specjalizacja:</ul>-->
-<!--                    <li v-for="(spec, index) in company.specialization" v-if="index < 3">{{spec.name}}</li>-->
-<!--                </v-card-text>-->
-<!--                    <v-card-actions>-->
-<!--                        <v-btn>-->
-<!--                            Hali-->
-<!--                        </v-btn>-->
-<!--                    </v-card-actions>-->
-<!--                </v-card>-->
-
-            </v-row>
-            </v-col>
+            </v-card>
         </v-row>
-        <v-row>
-            <h1>Dalsze informacje</h1>
+        <v-row class="justify-content-center">
+            <v-card>
+                <v-card-title style="background: rgba(0, 0, 0, 0.7); color: white; "
+                              class="justify-content-center">Najlepiej ocenione warsztaty</v-card-title>
+
+                <v-row class="justify-content-center my-2" no-gutters>
+                    <v-col lg="3" md="6" sm="12" xs="12"  v-for="(company,index) in bestCompanies" :key="company.id">
+                        <v-card class="mx-2">
+                            <v-card-title style="background: rgba(0, 0, 0, 0.7); color: white; ">
+                                #{{index + 1}} {{company.user.name}} {{company.user.surname}} "{{company.name}}"
+                                <v-spacer></v-spacer>
+                                <v-btn color="white" text class="px-0" small @click="$router.push(`/MechanicDetails/${company.id}`)">
+                                    <v-icon>mdi-open-in-new</v-icon>
+                                </v-btn>
+                            </v-card-title>
+                            <v-card-text>
+                                <h4 v-if="company.description">Opis właściciela</h4>
+                                <p>{{company.description}}</p>
+                                <v-divider></v-divider>
+                                <v-chip v-for="(spec,index) in company.specialization" :key="index"
+                                        class="ma-2"
+                                        color="green"
+                                        text-color="white"
+                                >
+                                    {{spec.name}}
+                                </v-chip>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                </v-row>
+            </v-card>
         </v-row>
+        <v-row class="justify-content-center">
+            <v-card class="nomanie">
+                <v-card-title style="background: rgba(0, 0, 0, 0.7); color: white; "
+                              class="justify-content-center">Ostatnio dodane komentarze</v-card-title>
+
+                <v-row class="justify-content-center my-2" no-gutters>
+                    <v-col lg="6" md="6" sm="12" xs="12"  v-for="(c,index) in comments" :key="c.id">
+                        <v-card>
+                            <v-card-title>{{c.company.name}}</v-card-title>
+                            <v-list two-line>
+                                <v-list-item-group>
+                                        <v-list-item>
+                                                <v-list-item-content>
+                                                    <v-list-item-title>{{c.user.name}} {{c.user.surname}}</v-list-item-title>
+                                                    <v-list-item-subtitle>{{c.comment}}</v-list-item-subtitle>
+                                                </v-list-item-content>
+                                                <v-list-item-action>
+                                                    <v-list-item-action-text>{{commentsDate[index]}}</v-list-item-action-text>
+                                                    <v-rating
+                                                        v-model="c.rating"
+                                                        color="yellow darken-3"
+                                                        background-color="grey darken-1"
+                                                        empty-icon="$ratingFull"
+                                                        half-increments
+                                                        hover
+                                                        medium
+                                                        readonly
+                                                    ></v-rating>
+                                                </v-list-item-action>
+                                        </v-list-item>
+                                </v-list-item-group>
+                            </v-list>
+                        </v-card>
+                    </v-col>
+                </v-row>
+            </v-card>
+        </v-row>
+
     </div>
 </template>
 <script>
@@ -70,19 +110,34 @@
         data(){
             return{
                 newCompanies:'',
-
+                bestCompanies:'',
+                comments:'',
+                commentsDate:[],
             }
         },
         async created() {
-            console.log('moj read',this.isRead)
-            console.log('moj write',this.isWrite)
-            console.log('moj delete',this.isDelete)
-            const res = await this.callApi('get','/getNewMechanics')
+            const res = await this.callApi('get','/getNewMechanics');
             if(res.status === 200){
-                this.newCompanies = res.data
+                this.newCompanies = res.data;
+                console.log(this.newCompanies)
+            }else{
+                this.$toast.error('Nie udało się pobrać nowych warsztatów, odśwież stronę');
+            }
+            const bestCompanies = await this.callApi('get','/bestCompanies');
+            if(bestCompanies.status ===200){
+                this.bestCompanies = bestCompanies.data;
 
             }else{
-                this.$toast.error('Nie udało się pobrać nowych warsztatów, odśwież stronę')
+                this.$toast.error('Nie udało się pobrać najlepiej ocenionych warsztatów, odśwież stronę');
+            }
+            const comments = await this.callApi('get','/getLastComments');
+            if(comments.status ===200){
+                this.comments = comments.data[0];
+                this.commentsDate = comments.data[1];
+                console.log(this.comments)
+                console.log(this.commentsDate)
+            }else{
+                this.$toast.error('Nie udało się pobrać nowych komentarzy, odśwież stronę');
             }
         }
     }

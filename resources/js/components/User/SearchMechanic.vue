@@ -1,5 +1,5 @@
 <template>
-    <v-app>
+    <div class="container-fluid">
         <div class="container">
         <h1 v-if="getUser">Wyszukaj warsztat</h1>
         <h1 v-else >Wskaż lokalizację swojego warsztatu</h1>
@@ -19,7 +19,7 @@
                                  background="#BBF0FF">
                                  {{company.name}}
                             </gmaps-popup>
-                        </span>
+                </span>
             </gmaps-map>
         </template>
         </div>
@@ -31,38 +31,36 @@
                     </v-chip></h2>
                 </v-col>
             </v-row>
-            <v-row v-if="shownearCompanies">
+            <v-row v-if="shownearCompanies && getUser">
                 <v-col cols="12" lg="12">
-                    <v-row>
-            <v-card v-for="(nearCompany,index) in nearCompanies" :key="nearCompany.id"
-                    max-width="250px" class="m-2 card-outter">
-                <v-list-item>
-                    <v-list-item-avatar color="grey"></v-list-item-avatar>
-                    <v-list-item-content>
-                        <v-list-item-title class="headline">{{nearCompany.name}}</v-list-item-title>
-                        <v-list-item-subtitle>{{nearCompany.user.name}}</v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-img
-                    src=""
-                    height="150px"
-                ></v-img>
-                <v-card-text>
-                    <span v-for="spec in nearCompany.specialization">{{ spec.name }}</span>
-                </v-card-text>
-                <v-card-actions class="card-actions">
-                    <v-btn
-                        text
-                        color="deep-purple accent-4"
-                        @click="$router.push(`/MechanicDetails/${nearCompany.id}`)"
-                    >
-                        Szczegóły
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
+                    <v-row class="justify-content-center my-2" no-gutters>
+                        <v-col lg="3" md="6" sm="12" xs="12"  v-for="(company,index) in nearCompanies" :key="company.id">
+                            <v-card class="mx-2">
+                                <v-card-title style="background: rgba(0, 0, 0, 0.7); color: white; ">
+                                    {{company.user.name}} {{company.user.surname}} "{{company.name}}"
+                                    <v-spacer></v-spacer>
+                                    <v-btn text color="white" small class="px-0" @click="$router.push(`/MechanicDetails/${company.id}`)">
+                                        <v-icon >mdi-open-in-new</v-icon>
+                                    </v-btn>
+                                </v-card-title>
+                                <v-card-text>
+                                    <h4 v-if="company.description">Opis właściciela</h4>
+                                    <p>{{company.description}}</p>
+                                    <v-divider></v-divider>
+                                    <v-chip v-for="(spec,index) in company.specialization" :key="index"
+                                            class="ma-2"
+                                            color="green"
+                                            text-color="white"
+                                    >
+                                        {{spec.name}}
+                                    </v-chip>
+                                </v-card-text>
+                            </v-card>
+                        </v-col>
                     </v-row>
                 </v-col>
             </v-row>
+
             <v-row  v-else>
                 <v-col cols="12">
                         <h3 class="red--text" >Nie znaleziono warsztatów w podanym promieniu</h3>
@@ -97,7 +95,7 @@
                 </v-card>
             </v-dialog>
         </div>
-    </v-app>
+    </div>
 </template>
 <style scoped>
     .card-outter {

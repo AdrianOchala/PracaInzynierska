@@ -142,22 +142,24 @@
                 errors:[],
                 index:0,
                 resources:[
-
                     {resourceName: 'Szukaj mechanika',read: false, write: false, update:false, delete:false, name:'SearchMechanic'},
                     {resourceName: 'Mój warsztat',read: false, write: false, update:false, delete:false, name:'OwnerCompany'},
                     {resourceName: 'Mój samochód',read: false, write: false, update:false, delete:false, name:'UserCar'},
                     {resourceName: 'Moje naprawy',read: false, write: false, update:false, delete:false, name:'UserRepair'},
                     {resourceName: 'Wiadomości',read: false, write: false, update:false, delete:false, name:'UserMessages'},
                     {resourceName: 'Zarządzanie rolami',read: false, write: false, update:false, delete:false, name:'AdminRoleManagement'},
+                    {resourceName: 'Zarządzanie użytkownikami',read: false, write: false, update:false, delete:false, name:'AdminUsersManagement'},
+                    {resourceName: 'Zgłoszenia',read: false, write: false, update:false, delete:false, name:'AdminReportsManagement'},
                 ],
                 defaultResources:[
-
                     {resourceName: 'Szukaj mechanika',read: false, write: false, update:false, delete:false, name:'SearchMechanic'},
                     {resourceName: 'Mój warsztat',read: false, write: false, update:false, delete:false, name:'OwnerCompany'},
                     {resourceName: 'Mój samochód',read: false, write: false, update:false, delete:false, name:'UserCar'},
                     {resourceName: 'Moje naprawy',read: false, write: false, update:false, delete:false, name:'UserRepair'},
                     {resourceName: 'Wiadomości',read: false, write: false, update:false, delete:false, name:'UserMessages'},
                     {resourceName: 'Zarządzanie rolami',read: false, write: false, update:false, delete:false, name:'AdminRoleManagement'},
+                    {resourceName: 'Zarządzanie użytkownikami',read: false, write: false, update:false, delete:false, name:'AdminUsersManagement'},
+                    {resourceName: 'Zgłoszenia',read: false, write: false, update:false, delete:false, name:'AdminReportsManagement'},
                 ],
                 selectedRole:null,
             }

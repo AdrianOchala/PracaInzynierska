@@ -12,7 +12,7 @@
 
                 <p class="font-weight-black">O stronie</p>
                 <p>Większość z kierowców nie raz miała sytuację, w której jego samochód potrzebował wizyty u mechanika.
-                Najgorzej w takiej sytuacji jest się znaleźć gdy jesteśmy w trasie, na wakacjach czy ogólnie w innym
+                Najgorzej w takiej sytuacji jest się znaleźć, gdy jesteśmy w trasie, na wakacjach czy ogólnie w innym
                 nie znanym nam mieście. Dzięki tej aplikacji będziesz w stanie w szybki i prosty sposób znaleźć najbliższy warsztat
                 wraz z jego oceną i opiniami innych klientów. Z pośród wszystkich dostępnych w okolicy wybierzesz ten który będzie Ci najbardziej odpowiadał.</p>
                 <p>Jeśli jesteś właścicielem warsztatu możesz go dodać do naszej bazy danych i korzystać z udostępnionej przez nas funkcjonalności.</p>
@@ -27,21 +27,20 @@
             </v-col>
             <v-col cols="12" lg="5" offset-lg="1" md="6"  class="text-center order-sm-2 order-md-1">
                 <h2 class="font-italic font-weight-light ma-1">Oferowane opcje?</h2>
-                <p>Jako zwykły <kbd>użytkownik</kbd> poza wyszukiwaniem warsztatów będziesz również mógł:<br>
+                <p>Jako zwykły <kbd>użytkownik</kbd> poza wyszukiwaniem warsztatów będziesz również:<br>
                 <ul>
-                    <li>Sprawdzić dostępność</li>
-                    <li>Będziesz mieć wgląd do swojej wizyty</li>
-                    <li>Będziesz mógł skontaktowac się z mechanikiem</li>
-                    <li>Wgląd w przybliżone koszta naprawy i wymienione części</li>
-                    <li>Możliwość pozostawienia komentarza oraz oceny</li>
-                    <li>Wgląd w historię napraw dodanych pojazdów</li>
+                    <li>Sprawdzać warsztaty w okolicy</li>
+                    <li>Mieć wgląd do swojej wizyty</li>
+                    <li>Mógł skontaktowac się z mechanikiem</li>
+                    <li>Mieć wgląd w przybliżone koszta naprawy </li>
+                    <li>Mógł zostawić komentarz i ocenę warsztatu</li>
+                    <li>Mieć wgląd w historię napraw dodanych pojazdów</li>
                 </ul>
-                    Jako <kbd>właściciel warsztatu</kbd> poza uprawnieniami użytkownika będziesz mógł:
+                    Jako <kbd>właściciel warsztatu</kbd> poza uprawnieniami użytkownika będziesz:
                 <ul>
-                    <li>Dodaj specjalizację swojego warsztatu</li>
-                    <li>Kontaktować się z klientem</li>
-                    <li>Sprawniej przekazywać informacje dotyczące danej wizyty</li>
-                    <li>Dodać pracowników i zarządzać ich uprawnieniami</li>
+                    <li>Mógł zarządzać swoim warsztatem</li>
+                    <li>Mógł kontaktować się z klientem poprzez czat</li>
+                    <li>Mógł sprawniej przekazywać informacje dotyczące danej wizyty</li>
                     <li>Mieć wgląd w wszystkie naprawy przeprowadzone w swoim warsztacie za pośrednictwem naszej aplikacji</li>
                 </ul></p>
             </v-col>

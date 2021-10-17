@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Company extends Model
 {
     protected $fillable = [
-        'user_id', 'name', 'NIP','location','city','street','zipCode','phones'
+        'user_id', 'name', 'NIP','location','city','street','zipCode','phones','description','hours','active'
     ];
     public $timestamps = false;
     public function user(){

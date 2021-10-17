@@ -63,6 +63,13 @@ class RepairsController extends Controller
             'status'=>'W trakcie',
         ]);
     }
+    public function rejectRepair(Request $request){
+        return Repair::where('id',$request->id)->update([
+            'companyReply'=>$request->companyReply,
+            'price'=>$request->price,
+            'status'=>'Zakończone',
+        ]);
+    }
     public function addMessage(Request $request)
     {
         return ChatMessage::create([

@@ -9,11 +9,14 @@ import UserRepair from "./components/User/UserRepairComponent";
 import UserRepairDetails from "./components/User/UserRepairDetailsComponent";
 import OwnerRepairDetails from "./components/Owner/OwnerRepairDetailsComponent";
 import AdminRoleManagement from "./components/Admin/AdminRoleManagementComponent";
+import AdminUsersManagement from "./components/Admin/AdminUsersManagementComponent";
+import AdminReportsManagement from "./components/Admin/AdminReportsManagementComponent";
 import SearchMechanic from "./components/User/SearchMechanic";
 import MechanicDetails from "./components/User/MechanicDetails";
 import OwnerCompany from "./components/Owner/OwnerCompanyComponent";
 import PageNotFound from "./pages/PageNotFound";
 import UserMessages from "./components/User/UserMessagesComponent";
+import UserSettings from "./components/User/UserSettingsComponent";
 
 export default new VueRouter({
     routes:[
@@ -28,11 +31,14 @@ export default new VueRouter({
         {path:'/UserRepair',component:UserRepair,name:UserRepair},
         {path:'/UserRepairDetails/:id',component:UserRepairDetails,name:UserRepairDetails},
         {path:'/UserMessages',component:UserMessages,name:UserMessages},
+        {path:'/UserSettings',component:UserSettings,name:UserSettings},
         //Owner Path's
         {path:'/OwnerCompany',component:OwnerCompany,name:OwnerCompany},//Wgląd w swój warsztat
         {path:'/OwnerRepairDetails/:id',component:OwnerRepairDetails,name:OwnerRepairDetails},//Wgląd w swoje samochody, dodawanie, edytowanie
         //Admin path's
         {path:'/AdminRoleManagement',component:AdminRoleManagement,name:AdminRoleManagement},
+        {path:'/AdminUsersManagement',component:AdminUsersManagement,name:AdminUsersManagement},
+        {path:'/AdminReportsManagement',component:AdminReportsManagement,name:AdminReportsManagement},
 
         {path:'*',component:PageNotFound,name:'pagenotfound'},
 

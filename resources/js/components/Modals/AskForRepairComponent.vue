@@ -11,6 +11,9 @@
                                           item-value="id"
                                           v-model="repair.car"
                                           label="Wybierz samochód, którego dotyczy naprawa"
+                                          :error-messages="carErrors"
+                                          @input="$v.repair.car.$touch()"
+                                          @blur="$v.repair.car.$touch()"
                                 ></v-select>
                             </v-col>
                             <v-col cols="12" lg="6">
@@ -20,12 +23,18 @@
                                           v-model="repair.category"
                                           label="Kategoria naprawy"
                                           @change="showCategory"
+                                          :error-messages="categoryErrors"
+                                          @input="$v.repair.category.$touch()"
+                                          @blur="$v.repair.category.$touch()"
                                 ></v-select>
                             </v-col>
                             <v-col cols="12" lg="6">
                                 <v-select v-if="showSubcategory" :items="repairCategories[repair.category].subCategory"
                                           v-model="repair.subCategory"
                                           label="Kategoria naprawy"
+                                          :error-messages="subcategoryErrors"
+                                          @input="$v.repair.subCategory.$touch()"
+                                          @blur="$v.repair.subCategory.$touch()"
                                 ></v-select>
                             </v-col>
                             <v-col cols="12" lg="12">
@@ -41,11 +50,18 @@
                                     auto-grow
                                     background-color="#CFD8DC"
                                     rows="1"
+                                    :error-messages="descriptionErrors"
+                                    @input="$v.repair.description.$touch()"
+                                    @blur="$v.repair.description.$touch()"
                                 ></v-textarea>
                             </v-col>
                             <v-col cols="12" lg="12">
                                 <h4>Preferowany kontakt przez: </h4>
-                                <v-radio-group v-model="repair.contact" row class="label">
+                                <v-radio-group v-model="repair.contact" row class="label"
+                                               :error-messages="contactErrors"
+                                               @input="$v.repair.contact.$touch()"
+                                               @blur="$v.repair.contact.$touch()"
+                                >
                                     <v-radio label="Sms" value="sms"></v-radio>
                                     <v-radio label="Telefon" value="telefon"></v-radio>
                                     <v-radio label="Komunikator w aplikacji" value="komunikator w aplikacji"></v-radio>
@@ -58,12 +74,14 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn text color="primary" @click="closeDialog">Anuluj</v-btn>
-                    <v-btn text color="primary" @click="saveRepair">Zapytaj</v-btn>
+                    <v-btn text color="primary" @click="saveRepair" :disabled="$v.repair.$invalid">Zapytaj</v-btn>
                 </v-card-actions>
             </v-card>
 
 </template>
 <script>
+    import {required, minLength,maxLength,between,numeric} from 'vuelidate/lib/validators';
+
     export default{
         props:['company'],
         data(){
@@ -123,6 +141,26 @@
                 indexOfSubcategory:0,
                 showSubcategory:false,
                 descriptionRules: [v => v.length <= 250 || 'Max 250 characters'],
+            }
+        },
+        validations:{
+            repair:{
+                car:{
+                    required
+                },
+                category:{
+                    required
+                },
+                subCategory:{
+                    required
+                },
+                description:{
+                    required,
+                    maxLength:maxLength(250)
+                },
+                contact:{
+                    required
+                }
             }
         },
         methods:{
@@ -189,6 +227,40 @@
             }else{
                 this.$toast.error('Problem przy pobieraniu samochodów. Proszę odświeżyć stronę.');
             }
+        },
+        computed:{
+            carErrors(){
+                const errors = [];
+                if (!this.$v.repair.car.$dirty) return errors;
+                !this.$v.repair.car.required && errors.push('To pole jest wymagane.');
+                return errors;
+            },
+            categoryErrors(){
+                const errors = [];
+                if (!this.$v.repair.category.$dirty) return errors;
+                !this.$v.repair.category.required && errors.push('To pole jest wymagane.');
+                return errors;
+            },
+            subcategoryErrors(){
+                const errors = [];
+                if (!this.$v.repair.subCategory.$dirty) return errors;
+                !this.$v.repair.subCategory.required && errors.push('To pole jest wymagane.');
+                return errors;
+            },
+            descriptionErrors(){
+                const errors = [];
+                if (!this.$v.repair.description.$dirty) return errors;
+                !this.$v.repair.description.required && errors.push('To pole jest wymagane.');
+                !this.$v.repair.description.maxLength && errors.push('Maksymalnie 250 znaków.');
+
+                return errors;
+            },
+            contactErrors(){
+                const errors = [];
+                if (!this.$v.repair.contact.$dirty) return errors;
+                !this.$v.repair.contact.required && errors.push('To pole jest wymagane.');
+                return errors;
+            },
         }
 
     }

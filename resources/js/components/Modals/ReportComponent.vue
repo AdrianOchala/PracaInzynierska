@@ -13,26 +13,36 @@
                         label="Powód zgłoszenia"
                         v-model="reason"
                         hint="Max 250 znaków"
-                        :rules="rules"
                         filled
                         auto-grow
                         background-color="#CFD8DC"
                         rows="1"
+                        :error-messages="addReasonErrors"
+                        @input="$v.reason.$touch()"
+                        @blur="$v.reason.$touch()"
                     ></v-textarea>
                 </v-card-text>
                 <v-card-actions class="justify-center">
                     <v-btn text color="primary" @click="closeModal">Anuluj</v-btn>
-                    <v-btn text color="primary" @click="report">Zgłoś</v-btn>
+                    <v-btn text color="primary" @click="report" :disabled="$v.reason.$invalid">Zgłoś</v-btn>
                 </v-card-actions>
             </v-card>
 
 </template>
 <script>
-    import {mapGetters} from 'vuex'
+    import {mapGetters} from 'vuex';
+    import {required, minLength,maxLength,between,numeric} from 'vuelidate/lib/validators';
+
     export default{
         data(){
             return{
                 reason:'',
+            }
+        },
+        validations:{
+            reason:{
+                required,
+                maxLength:maxLength(250)
             }
         },
         methods:{
@@ -47,7 +57,8 @@
                 this.$store.commit('setReportComponent',reportInfo);
             },
             async report(){
-                const res = await this.callApi('post', this.getReportComponent.reportUrl, {index:this.getReportComponent.targetIndex});
+                const res = await this.callApi('post', this.getReportComponent.reportUrl, {index:this.getReportComponent.targetIndex,
+                                                                                            reason:this.reason});
                 if(res.status ===201){
                     this.$toast.success('Zgłosiłeś ' + this.getReportComponent.reportObject);
                     this.reason = '';
@@ -69,6 +80,13 @@
         },
         computed:{
             ...mapGetters(['getReportComponent']),
+            addReasonErrors(){
+                const errors = [];
+                if (!this.$v.reason.$dirty) return errors;
+                !this.$v.reason.required && errors.push('To pole jest wymagane.');
+                !this.$v.reason.maxLength && errors.push('Maksymalnie 250 znaków.');
+                return errors;
+            },
         },
     }
 </script>

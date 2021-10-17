@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('phone',20);
             $table->unsignedBigInteger('role_id');
             $table->foreign('role_id')->references('id')->on('roles');
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

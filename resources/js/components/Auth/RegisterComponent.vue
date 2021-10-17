@@ -32,14 +32,14 @@
                                 <v-container>
                                     <v-row>
                                         <v-col cols="12" sm="6" md="6">
-                                            <v-text-field v-model="owner.name" label="Imię*" required
+                                            <v-text-field v-model="owner.name" label="Imię*"
                                                           :error-messages="ownerNameErrors"
                                                           @input="$v.owner.name.$touch()"
                                                           @blur="$v.owner.name.$touch()"
                                             ></v-text-field>
                                         </v-col>
                                         <v-col cols="12" sm="6" md="6">
-                                            <v-text-field v-model="owner.surname" label="Nazwisko"
+                                            <v-text-field v-model="owner.surname" label="Nazwisko*"
                                                           :error-messages="ownerSurnameErrors"
                                                           @input="$v.owner.surname.$touch()"
                                                           @blur="$v.owner.surname.$touch()"
@@ -77,17 +77,14 @@
                                 </v-container>
                                 <small>*Wymagane</small>
                             </v-card-text>
-
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn text @click="accountType =''">Zamknij</v-btn>
+                                <v-btn text @click="owner.activeStep = 2">
+                                    Dalej
+                                </v-btn>
+                            </v-card-actions>
                         </v-card>
-
-                        <v-btn
-                            color="primary"
-                            @click="owner.activeStep = 2"
-                        >
-                            Continue
-                        </v-btn>
-
-                        <v-btn text>Cancel</v-btn>
                     </v-stepper-content>
 
                     <!--Dane dla druugiego kroku rejestracji, dane warsztatu-->
@@ -151,26 +148,157 @@
                                                 <v-icon left>mdi-minus</v-icon> Usuń
                                             </v-btn>
                                         </v-col>
+                                        <small>*Wymagane</small>
+                                        <v-col cols="12" sm="12" md="12">
+                                            <v-textarea
+                                                clearable
+                                                counter
+                                                clear-icon="mdi-close-circle"
+                                                label="Opis firmy..."
+                                                v-model="owner.description"
+                                                hint="Max 500 znaków"
+                                                filled
+                                                auto-grow
+                                                background-color="#CFD8DC"
+                                                rows="1"
+                                                :error-messages="ownerDescriptionErrors"
+                                                @input="$v.owner.description.$touch()"
+                                                @blur="$v.owner.description.$touch()"
+                                            ></v-textarea>
+                                        </v-col>
+                                        <v-col cols="12" sm="12" md="12">
+                                            <v-card>
+                                                <v-card-title>Godziny otwarcia</v-card-title>
+                                                <v-card-text>
+                                                    <v-simple-table dark>
+                                                        <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Poniedziałek</th>
+                                                            <th>Wtorek</th>
+                                                            <th>Środa</th>
+                                                            <th>Czwartek</th>
+                                                            <th>Piątek</th>
+                                                            <th>Sobota</th>
+                                                            <th>Niedziela</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>Od</td>
+                                                                <td>
+                                                                    <v-select
+                                                                        v-model="owner.hours[0].from"
+                                                                        :items="hours"
+                                                                    ></v-select>
+                                                                </td>
+                                                                <td>
+                                                                    <v-select
+                                                                        v-model="owner.hours[1].from"
+                                                                        :items="hours"
+                                                                    ></v-select>
+                                                                </td>
+                                                                <td>
+                                                                    <v-select
+                                                                        v-model="owner.hours[2].from"
+                                                                        :items="hours"
+                                                                    ></v-select>
+                                                                </td>
+                                                                <td>
+                                                                    <v-select
+                                                                        v-model="owner.hours[3].from"
+                                                                        :items="hours"
+                                                                    ></v-select>
+                                                                </td>
+                                                                <td>
+                                                                    <v-select
+                                                                        v-model="owner.hours[4].from"
+                                                                        :items="hours"
+                                                                    ></v-select>
+                                                                </td>
+                                                                <td>
+                                                                    <v-select
+                                                                        v-model="owner.hours[5].from"
+                                                                        :items="hours"
+                                                                    ></v-select>
+                                                                </td>
+                                                                <td>
+                                                                    <v-select
+                                                                        v-model="owner.hours[6].from"
+                                                                        :items="hours"
+                                                                    ></v-select>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Do</td>
+                                                                <td>
+                                                                    <v-select
+                                                                        v-model="owner.hours[0].to"
+                                                                        :items="hours"
+                                                                    ></v-select>
+                                                                </td>
+                                                                <td>
+                                                                    <v-select
+                                                                        v-model="owner.hours[1].to"
+                                                                        :items="hours"
+                                                                    ></v-select>
+                                                                </td>
+                                                                <td>
+                                                                    <v-select
+                                                                        v-model="owner.hours[2].to"
+                                                                        :items="hours"
+                                                                    ></v-select>
+                                                                </td>
+                                                                <td>
+                                                                    <v-select
+                                                                        v-model="owner.hours[3].to"
+                                                                        :items="hours"
+                                                                    ></v-select>
+                                                                </td>
+                                                                <td>
+                                                                    <v-select
+                                                                        v-model="owner.hours[4].to"
+                                                                        :items="hours"
+                                                                    ></v-select>
+                                                                </td>
+                                                                <td>
+                                                                    <v-select
+                                                                        v-model="owner.hours[5].to"
+                                                                        :items="hours"
+                                                                    ></v-select>
+                                                                </td>
+                                                                <td>
+                                                                    <v-select
+                                                                        v-model="owner.hours[6].to"
+                                                                        :items="hours"
+                                                                    ></v-select>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </v-simple-table>
+                                                </v-card-text>
+                                            </v-card>
+                                        </v-col>
                                     </v-row>
                                     <v-row>
                                         <v-col cols="12" sm="12" md="12">
-                                            <searchOnTheMap>
-                                            </searchOnTheMap>
+                                            <searchOnTheMap />
                                         </v-col>
+
                                     </v-row>
                                 </v-container>
-                                <small>*Wymagane</small>
                             </v-card-text>
+                            <v-card-actions>
+                                <v-btn text @click="owner.activeStep = 1">
+                                    Wstecz
+                                </v-btn>
+                                <v-spacer></v-spacer>
+                                <v-btn text @click="accountType =''">Zamknij</v-btn>
+                                <v-btn text @click="registerOwner" :disabled="$v.owner.$invalid">
+                                    Zarejestruj
+                                </v-btn>
+                            </v-card-actions>
                         </v-card>
-                        <v-btn
-                            color="primary"
-                            @click="registerOwner"
-                            :disabled="$v.owner.$invalid"
-                        >
-                            Zarejestruj
-                        </v-btn>
-
-                        <v-btn text>Cancel</v-btn>
                     </v-stepper-content>
                 </v-stepper-items>
             </v-stepper>
@@ -238,8 +366,8 @@
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
-                                <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-                                <v-btn color="blue darken-1" text @click="registerUser" :disabled="$v.user.$invalid">Zarejestruj</v-btn>
+                                <v-btn text @click="accountType =''">Zamknij</v-btn>
+                                <v-btn text @click="registerUser" :disabled="$v.user.$invalid">Zarejestruj</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-stepper-content>
@@ -274,9 +402,21 @@
                     zipCode:'',
                     companyPhones:[{'number': null}],
                     companyConvertedPhones:null,
+                    description:'',
+                    hours:[
+                        {'day':'Poniedziałek','from':null,'to':null},
+                        {'day':'Wtorek','from':null,'to':null},
+                        {'day':'Środa','from':null,'to':null},
+                        {'day':'Czwartek','from':null,'to':null},
+                        {'day':'Piątek','from':null,'to':null},
+                        {'day':'Sobota','from':null,'to':null},
+                        {'day':'Niedziela','from':null,'to':null},
+                        ],
                     location:'',
                     selectedSpecs:[],
                 },
+                hours:['00:00','01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00',
+                '11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00'],
                 //Dane rejestracyjne dla użytkownika
                 user:{
                     activeStep:1,
@@ -355,18 +495,24 @@
                 street: {
                     required
                 },
+                description: {
+                    maxLength:maxLength(500)
+                }
             }
         },
         methods:{
             async registerUser(){
                 const res = await this.callApi('post','/registerUser',this.user);
                 if(res.status === 201){
-                    this.$toast.success('Pomyślnie zarejestowano, proszę się zalogować')
-                    this.accountType =''
+                    this.$toast.success('Pomyślnie zarejestowano, proszę się zalogować');
+                    this.accountType ='';
                     this.$store.commit('setShowLoginComponent', true);
                     this.$store.commit('setShowRegisterComponent', false);
                 }else{
-                    this.$toast.warning('Coś poszło nie tak')
+                    if(res.data.errors.email){
+                        this.$toast.error(res.data.errors.email[0]);
+                    }
+                    this.$toast.error('Proszę poprawić błędy');
                 }
             },
             async registerOwner(){
@@ -374,13 +520,17 @@
                     this.owner.location = this.getCompanyLocation;
                     this.owner.companyConvertedPhones = JSON.stringify(this.owner.companyPhones);
                     this.owner.location = JSON.stringify(this.owner.location);
+                    this.owner.hours = JSON.stringify(this.owner.hours);
                     const res = await this.callApi('post','/registerOwner', this.owner );
                     if(res.status === 200){
                         this.$toast.success('Pomyślnie zarejestowano, proszę się zalogować');
                         this.$store.commit('setShowLoginComponent', true);
                         this.$store.commit('setShowRegisterComponent', false);
                     }else{
-                        this.$toast.warning('Coś poszło nie tak');
+                        if(res.data.errors.email){
+                            this.$toast.error(res.data.errors.email[0]);
+                        }
+                        this.$toast.warning('Proszę poprawić błędy');
                     }
                 }else{
                     this.$toast.warning('Proszę zapisać lokalizację warsztatu!');
@@ -507,6 +657,12 @@
                 !this.$v.owner.NIP.numeric && errors.push('NIP zawiera tylko cyfry.');
                 !this.$v.owner.NIP.minLength && errors.push('Za mało! NIP posiada 10 znaków.');
                 !this.$v.owner.NIP.maxLength && errors.push('Za dużo! NIP posiada 10 znaków.');
+                return errors;
+            },
+            ownerDescriptionErrors(){
+                const errors = [];
+                if (!this.$v.owner.description.$dirty) return errors;
+                !this.$v.owner.description.maxLength && errors.push('Maksymalna ilość znaków 500.');
                 return errors;
             },
         },

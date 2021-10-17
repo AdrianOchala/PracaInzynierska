@@ -431,6 +431,9 @@
                                                   item-value="id"
                                                   v-model="note.car"
                                                   label="Wybierz swój samochód"
+                                                  :error-messages="addNoteCarErrors"
+                                                  @input="$v.note.car.$touch()"
+                                                  @blur="$v.note.car.$touch()"
                                         ></v-select>
                                     </v-col>
                                     <v-col cols="12" lg="6">
@@ -451,6 +454,9 @@
                                                     readonly
                                                     v-bind="attrs"
                                                     v-on="on"
+                                                    :error-messages="addNoteDateErrors"
+                                                    @input="$v.note.date.$touch()"
+                                                    @blur="$v.note.date.$touch()"
                                                 ></v-text-field>
                                             </template>
                                             <v-date-picker
@@ -478,6 +484,9 @@
                                             auto-grow
                                             background-color="#CFD8DC"
                                             rows="1"
+                                            :error-messages="addNoteDescriptionErrors"
+                                            @input="$v.note.description.$touch()"
+                                            @blur="$v.note.description.$touch()"
                                         ></v-textarea>
                                     </v-col>
                                 </v-row>
@@ -485,7 +494,7 @@
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn text color="primary" @click="saveNote">Zapisz</v-btn>
+                            <v-btn text color="primary" @click="saveNote" :disabled="$v.note.$invalid">Zapisz</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -501,12 +510,15 @@
                                                   item-value="id"
                                                   v-model="editnote.car"
                                                   label="Wybierz swój samochód"
+                                                  :error-messages="editNoteCarErrors"
+                                                  @input="$v.editnote.car.$touch()"
+                                                  @blur="$v.editnote.car.$touch()"
                                         ></v-select>
                                     </v-col>
                                     <v-col cols="12" lg="6">
                                         <v-menu
-                                            ref="notemenupicker"
-                                            v-model="notemenupicker"
+                                            ref="editnotemenupicker"
+                                            v-model="editnotemenupicker"
                                             :close-on-content-click="false"
                                             :return-value.sync="editnote.date"
                                             transition="scale-transition"
@@ -521,6 +533,9 @@
                                                     readonly
                                                     v-bind="attrs"
                                                     v-on="on"
+                                                    :error-messages="editNoteDateErrors"
+                                                    @input="$v.editnote.date.$touch()"
+                                                    @blur="$v.editnote.date.$touch()"
                                                 ></v-text-field>
                                             </template>
                                             <v-date-picker
@@ -529,9 +544,9 @@
                                                 locale="pl"
                                             >
                                                 <v-spacer></v-spacer>
-                                                <v-btn @click="resetNoteDate">Resetuj</v-btn>
-                                                <v-btn @click="notemenupicker = false">Anuluj</v-btn>
-                                                <v-btn @click="$refs.notemenupicker.save(editnote.date)">Zapisz</v-btn>
+                                                <v-btn @click="resetEditNoteDate">Resetuj</v-btn>
+                                                <v-btn @click="editnotemenupicker = false">Anuluj</v-btn>
+                                                <v-btn @click="$refs.editnotemenupicker.save(editnote.date)">Zapisz</v-btn>
                                             </v-date-picker>
                                         </v-menu>
                                     </v-col>
@@ -548,6 +563,9 @@
                                             auto-grow
                                             background-color="#CFD8DC"
                                             rows="1"
+                                            :error-messages="editNoteDescriptionErrors"
+                                            @input="$v.editnote.description.$touch()"
+                                            @blur="$v.editnote.description.$touch()"
                                         ></v-textarea>
                                     </v-col>
                                 </v-row>
@@ -555,7 +573,7 @@
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn text color="primary" @click="saveEditedNote">Zapisz</v-btn>
+                            <v-btn text color="primary" @click="saveEditedNote" :disabled="$v.editnote.$invalid">Zapisz</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -651,6 +669,7 @@
                 userRepairs:'',
                 addNotesDialog:false,
                 notemenupicker:false,
+                editnotemenupicker:false,
                 note:{
                     date:'',
                     description:'',
@@ -747,6 +766,30 @@
                 },
 
 
+            },
+            note:{
+                car:{
+                    required
+                },
+                date:{
+                    required
+                },
+                description:{
+                    required,
+                    maxLength:maxLength(250)
+                }
+            },
+            editnote:{
+                car:{
+                    required
+                },
+                date:{
+                    required
+                },
+                description:{
+                    required,
+                    maxLength:maxLength(250)
+                }
             }
         },
         methods:{
@@ -821,6 +864,9 @@
             },
             resetNoteDate(){
                 this.note.date = '';
+            },
+            resetEditNoteDate(){
+                this.editnote.date = '';
             },
             showEditingModal(car,index,carId){
                 let singleCar = {
@@ -1067,6 +1113,44 @@
                 !this.$v.editcar.VIN.required && errors.push('To pole jest wymagane.');
                 !this.$v.editcar.VIN.maxLength && errors.push('Za dużo znaków.');
                 !this.$v.editcar.VIN.minLength && errors.push('Za mało znaków.');
+                return errors;
+            },
+            addNoteDescriptionErrors(){
+                const errors = [];
+                if (!this.$v.note.description.$dirty) return errors;
+                !this.$v.note.description.required && errors.push('To pole jest wymagane.');
+                !this.$v.note.description.maxLength && errors.push('Maksymalnie 250 znaków.');
+                return errors;
+            },
+            addNoteCarErrors(){
+                const errors = [];
+                if (!this.$v.note.car.$dirty) return errors;
+                !this.$v.note.car.required && errors.push('To pole jest wymagane.');
+                return errors;
+            },
+            addNoteDateErrors(){
+                const errors = [];
+                if (!this.$v.note.date.$dirty) return errors;
+                !this.$v.note.date.required && errors.push('To pole jest wymagane.');
+                return errors;
+            },
+            editNoteDescriptionErrors(){
+                const errors = [];
+                if (!this.$v.editnote.description.$dirty) return errors;
+                !this.$v.editnote.description.required && errors.push('To pole jest wymagane.');
+                !this.$v.editnote.description.maxLength && errors.push('Maksymalnie 250 znaków.');
+                return errors;
+            },
+            editNoteCarErrors(){
+                const errors = [];
+                if (!this.$v.editnote.car.$dirty) return errors;
+                !this.$v.editnote.car.required && errors.push('To pole jest wymagane.');
+                return errors;
+            },
+            editNoteDateErrors(){
+                const errors = [];
+                if (!this.$v.editnote.date.$dirty) return errors;
+                !this.$v.editnote.date.required && errors.push('To pole jest wymagane.');
                 return errors;
             },
         },

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -72,7 +73,7 @@ class AuthController extends Controller
     public function registerUser(Request $request){
         $this->validate($request,[
             'name'=> 'required',
-            'email' => 'required | email',
+            'email' => 'required | email | unique:users',
             'password' => 'required',
         ]);
         return User::create([
@@ -106,6 +107,8 @@ class AuthController extends Controller
                 'street' => $request->street,
                 'zipCode' => $request->zipCode,
                 'phones' => $request->companyConvertedPhones,
+                'description'=>$request->description,
+                'hours'=>$request->hours,
             ]);
             $company = Company::where('NIP', $request->NIP)->first();
             $specs = $request->selectedSpecs;
@@ -123,5 +126,45 @@ class AuthController extends Controller
     }
     public function unauthorised(){
         return view('pagenotfound');
+    }
+    public function editPersonalUserData(Request $request){
+        return User::where('id',$request->id)->update([
+            'name'=>$request->name,
+            'surname'=>$request->surname,
+            'email'=>$request->email,
+            'phone'=>$request->phone
+        ]);
+    }
+    public function changeUserPassword(Request $request){
+        $userId = Auth::user()->id;
+        if ((Hash::check($request->userPassword, Auth::user()->password))) {
+            $hashPassword = bcrypt($request->userNewPassword);
+            User::where('id',$userId)->update(['password'=>$hashPassword]);
+            return 'Zmieniono hasła';
+        }else{
+            return 'coś nie pykło';
+        }
+    }
+    public function deleteAccount(){
+        $userId = Auth::user()->id;
+        Company::where('user_id',$userId)->update(['active'=>false]);
+        return User::where('id',$userId)->update(['active'=>false]);
+    }
+    public function checkActivity(Request $request){
+        $user = User::where('email',$request->email)->get();
+        $many = count($user);
+        if($many === 0){
+            return 'blank';
+        }else if($user[0]->active){
+            return 'active';
+        }else if(!$user[0]->active){
+            return 'not active';
+        }
+    }
+    public function activateUser(Request $request){
+        \Log::info($request);
+        $user = User::where('email',$request->email)->get();
+        Company::where('user_id',$user[0]->id)->update(['active'=>true]);
+        return User::where('email',$request->email)->update(['active'=>true]);
     }
 }

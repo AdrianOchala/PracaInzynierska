@@ -3,8 +3,13 @@
         <v-row>
             <v-col cols="12" lg="7">
                 <v-card v-if="userRepair">
-                    <v-card-title style="background: rgba(0, 0, 0, 0.7); color: white; ">
+                    <v-card-title v-if="userRepair.car" style="background: rgba(0, 0, 0, 0.7); color: white; ">
                         Szczegóły naprawy {{userRepair.car.model.brand.name}} {{userRepair.car.model.name}}
+                        <v-spacer></v-spacer>
+                        <v-btn outlined color="white">Status: " {{userRepair.status}}"</v-btn>
+                    </v-card-title>
+                    <v-card-title v-if="!userRepair.car" style="background: rgba(0, 0, 0, 0.7); color: white; ">
+                        Samochód usunięto
                         <v-spacer></v-spacer>
                         <v-btn outlined color="white">Status: " {{userRepair.status}}"</v-btn>
                     </v-card-title>
@@ -28,7 +33,8 @@
                                 <v-row><v-col cols="12" lg="6">
                                 <v-list-item-content>
                                     <v-list-item-title>Samochód</v-list-item-title>
-                                    <v-list-item-subtitle>{{userRepair.car.model.brand.name}} {{userRepair.car.model.name}}</v-list-item-subtitle>
+                                    <v-list-item-subtitle v-if="userRepair.car">{{userRepair.car.model.brand.name}} {{userRepair.car.model.name}}</v-list-item-subtitle>
+                                    <v-list-item-subtitle v-if="!userRepair.car">Samochód usunięto</v-list-item-subtitle>
                                 </v-list-item-content>
                                 </v-col>
                                 <v-col cols="12" lg="6">
@@ -66,7 +72,7 @@
                             <v-list-item>
                                 <v-list-item-content>
                                     <v-list-item-title v-if="priceAdded" style="text-align: center">
-                                        <v-btn outlined @click="addPrice">Cena: {{userRepair.price}}</v-btn>
+                                        <v-btn outlined @click="addPrice">Cena: {{userRepair.price}} zł</v-btn>
                                     </v-list-item-title>
                                     <v-list-item-title style="text-align: center" v-else>
                                         <v-btn @click="addPrice" outlined >Cena: Brak podanej ceny przez warsztat</v-btn>
@@ -87,7 +93,30 @@
                                 </v-list-item-content>
                             </v-list-item>
                         </v-list>
-                        <v-btn @click="acceptRepair">Przyjmij zgłoszenie</v-btn>
+                        <v-btn @click="showAcceptationModal" v-if="userRepair.status ==='Oczekujące'">Przyjmij zgłoszenie</v-btn>
+                        <v-btn @click="showRejectionModal" v-if="userRepair.status !=='Zakończone'">Odrzuć zgłoszenie</v-btn>
+                        <v-dialog v-model="showAcceptRepairModal" persistent max-width="500px">
+                            <v-card>
+                                <v-card-title class="justify-center text-danger">
+                                    Czy na pewno chcesz przyjąć to zgłoszenie?
+                                </v-card-title>
+                                <v-card-actions class="justify-center">
+                                    <v-btn text color="primary" @click="closeAcceptationModal">Nie</v-btn>
+                                    <v-btn text color="primary" @click="acceptRepair">Tak</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                        <v-dialog v-model="showRejectRepairModal" persistent max-width="500px">
+                            <v-card>
+                                <v-card-title class="justify-center text-danger">
+                                    Czy na pewno chcesz odrzucić to zgłoszenie?
+                                </v-card-title>
+                                <v-card-actions class="justify-center">
+                                    <v-btn text color="primary" @click="closeRejectionModal">Nie</v-btn>
+                                    <v-btn text color="primary" @click="rejectRepair">Tak</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -115,19 +144,46 @@
                 userRepair:'',
                 priceModal:false,
                 priceAdded:false,
+                showAcceptRepairModal:false,
+                showRejectRepairModal:false,
             }
         },
         methods:{
+            closeRejectionModal(){
+                this.showRejectRepairModal = false;
+            },
+            showRejectionModal(){
+                this.showRejectRepairModal = true;
+            },
+            closeAcceptationModal(){
+                this.showAcceptRepairModal = false;
+            },
+            showAcceptationModal(){
+                this.showAcceptRepairModal = true;
+            },
+            async rejectRepair(){
+                const res = await this.callApi('post','/rejectRepair',this.userRepair);
+                if(res.status === 200){
+                    this.$toast.success('Pomyślnie odrzucono naprawę');
+                    this.showRejectRepairModal = false;
+                    setTimeout(() => {
+                        this.$router.go();
+                    }, 2000)
+                }else{
+                    this.$toast.error('Nie udało się odrzucić naprawy, prosze spróbowac później')
+                }
+            },
             async acceptRepair(){
                 const repairId = parseInt(this.$route.params.id);
                 const res = await this.callApi('post','/acceptRepair',this.userRepair);
                 if(res.status === 200){
                     this.$toast.success('Pomyślnie zatwierdzono naprawę');
+                    this.showAcceptRepairModal = false;
                     setTimeout(() => {
                         this.$router.go();
                         }, 2000)
                 }else{
-                    this.$toast.error('Nie udało się zatwierdzić naprawy, prosze spróbowac później')
+                    this.$toast.error('Nie udało się zatwierdzić naprawy, proszę spróbowac później')
                 }
             },
             cancelPrice(){

@@ -35,7 +35,7 @@
 <!--                </v-list-item>-->
 
                 <v-divider></v-divider>
-                <v-list-item href="/logout">
+                <v-list-item href="/UserSettings">
                     <v-list-item-content>
                         <v-list-item-title>Ustawienia</v-list-item-title>
                     </v-list-item-content>
